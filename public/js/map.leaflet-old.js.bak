@@ -1,0 +1,133 @@
+/**
+ * FinPharma — public/js/map.js
+ * Leaflet + tuiles OpenStreetMap (gratuit, décision confirmée).
+ * §5/§6/§7 du cahier des charges : liste synchronisée avec la carte —
+ * clic sur une card met en surbrillance son marker et centre la carte,
+ * clic sur un marker met en surbrillance la card correspondante et scroll
+ * vers elle. Chargée en `defer` + initialisée seulement si un conteneur
+ * `[data-map]` existe sur la page (jamais sur home/médicaments/blog), pour
+ * ne payer le coût de Leaflet que sur les pages qui en ont besoin (§34,
+ * performance : "la map ne doit pas ralentir inutilement le chargement initial").
+ */
+(function () {
+    'use strict';
+
+    function loadLeafletAssets(callback) {
+        if (window.L) { callback(); return; }
+
+        var css = document.createElement('link');
+        css.rel = 'stylesheet';
+        css.href = 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css';
+        document.head.appendChild(css);
+
+        var script = document.createElement('script');
+        script.src = 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js';
+        script.onload = callback;
+        document.head.appendChild(script);
+    }
+
+    function initListMap(container) {
+        var raw = container.getAttribute('data-pharmacies');
+        var items = [];
+        try { items = JSON.parse(raw || '[]'); } catch (e) { items = []; }
+
+        var withCoords = items.filter(function (p) { return p.lat && p.lng; });
+        if (withCoords.length === 0) {
+            container.innerHTML = '<div class="map-empty">' + (container.getAttribute('data-empty-label') || 'Carte non disponible') + '</div>';
+            return;
+        }
+
+        var center = [parseFloat(withCoords[0].lat), parseFloat(withCoords[0].lng)];
+        var map = L.map(container, { scrollWheelZoom: false }).setView(center, 13);
+
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+            maxZoom: 19,
+        }).addTo(map);
+
+        var markers = {};
+        var bounds = [];
+
+        withCoords.forEach(function (p) {
+            var lat = parseFloat(p.lat), lng = parseFloat(p.lng);
+            bounds.push([lat, lng]);
+
+            var icon = L.divIcon({
+                className: 'map-pin' + (p.onDuty ? ' map-pin--duty' : ''),
+                html: '<span></span>',
+                iconSize: [28, 28],
+                iconAnchor: [14, 28],
+            });
+
+            var marker = L.marker([lat, lng], { icon: icon }).addTo(map);
+            marker.bindPopup(
+                '<strong>' + escapeHtml(p.name) + '</strong>' +
+                (p.address ? '<br>' + escapeHtml(p.address) : '') +
+                '<br><a href="' + p.url + '">Voir la fiche</a>'
+            );
+            marker.on('click', function () { highlightCard(p.id); });
+            markers[p.id] = marker;
+        });
+
+        if (bounds.length > 1) { map.fitBounds(bounds, { padding: [30, 30] }); }
+
+        // Synchronisation liste -> carte : clic sur une card centre + ouvre le popup du marker.
+        document.querySelectorAll('[data-pharmacy-card]').forEach(function (card) {
+            var id = card.getAttribute('data-pharmacy-card');
+            card.querySelectorAll('[data-view-on-map]').forEach(function (btn) {
+                btn.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    var marker = markers[id];
+                    if (!marker) { return; }
+                    map.setView(marker.getLatLng(), 16);
+                    marker.openPopup();
+                    container.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                });
+            });
+        });
+
+        function highlightCard(id) {
+            document.querySelectorAll('[data-pharmacy-card]').forEach(function (c) {
+                c.classList.toggle('pharmacy-card--active', c.getAttribute('data-pharmacy-card') === id);
+            });
+            var card = document.querySelector('[data-pharmacy-card="' + id + '"]');
+            if (card) { card.scrollIntoView({ behavior: 'smooth', block: 'nearest' }); }
+        }
+    }
+
+    function initDetailMap(container) {
+        var lat = parseFloat(container.getAttribute('data-lat'));
+        var lng = parseFloat(container.getAttribute('data-lng'));
+        if (!lat || !lng) {
+            container.innerHTML = '<div class="map-empty">' + (container.getAttribute('data-empty-label') || 'Carte non disponible') + '</div>';
+            return;
+        }
+
+        var map = L.map(container, { scrollWheelZoom: false }).setView([lat, lng], 16);
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+            maxZoom: 19,
+        }).addTo(map);
+
+        var icon = L.divIcon({ className: 'map-pin', html: '<span></span>', iconSize: [28, 28], iconAnchor: [14, 28] });
+        L.marker([lat, lng], { icon: icon }).addTo(map);
+    }
+
+    function escapeHtml(str) {
+        var div = document.createElement('div');
+        div.textContent = str || '';
+        return div.innerHTML;
+    }
+
+    document.addEventListener('DOMContentLoaded', function () {
+        var listMap = document.querySelector('[data-map="list"]');
+        var detailMap = document.querySelector('[data-map="detail"]');
+
+        if (listMap || detailMap) {
+            loadLeafletAssets(function () {
+                if (listMap) { initListMap(listMap); }
+                if (detailMap) { initDetailMap(detailMap); }
+            });
+        }
+    });
+})();

@@ -1,0 +1,17 @@
+framework:
+    messenger:
+        failure_transport: failed
+
+        transports:
+            # Transport Doctrine : réutilise la base PostgreSQL déjà en place,
+            # aucune infra supplémentaire (pas de Redis/RabbitMQ) — largement
+            # suffisant pour du volume d'email transactionnel. À réévaluer
+            # seulement si le volume d'envoi devient un vrai goulot.
+            async: '%env(MESSENGER_TRANSPORT_DSN)%'
+            failed: 'doctrine://default?queue_name=failed'
+
+        routing:
+            App\Message\WelcomeEmailMessage: async
+            App\Message\EstablishmentCreatedEmailMessage: async
+            App\Message\WalletCreditedEmailMessage: async
+            App\Message\DecoderRegisteredEmailMessage: async

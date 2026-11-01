@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+<div class="static-page">
+    {% include 'components/breadcrumbs.html.twig' with {items: [{name: 'nav.home'|trans, url: path('v1_home', {_locale: app.request.locale})}, {name: 'nav.blog'|trans, url: null}]} %}
+    <header class="static-page__header"><h1>{{ 'nav.blog'|trans }}</h1></header>
+    <div class="static-page__empty-state">
+        <p>{{ 'blog.coming_soon'|trans }}</p>
+    </div>
+</div>
+{% endblock %}

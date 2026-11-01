@@ -1,0 +1,23 @@
+/* À ajouter à la fin de public/css/admin.css (pas un fichier séparé à charger en plus). */
+
+.admin-page-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; }
+
+.admin-filter-bar { display: flex; align-items: center; gap: 14px; margin-bottom: 16px; flex-wrap: wrap; }
+.admin-filter-bar input[type="text"] {
+    font-family: var(--font-body); font-size: 13px; padding: 8px 12px; border: 1px solid var(--admin-border);
+    border-radius: 8px; min-width: 240px;
+}
+
+.admin-form { max-width: 900px; }
+.admin-form__grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px 20px; background: var(--admin-surface); border: 1px solid var(--admin-border); border-radius: 12px; padding: 24px; }
+.admin-form__field { display: flex; flex-direction: column; gap: 6px; font-size: 12px; color: var(--admin-text-muted); }
+.admin-form__field span { font-weight: 600; color: var(--admin-text); }
+.admin-form__field input,
+.admin-form__field select,
+.admin-form__field textarea {
+    font-family: var(--font-body); font-size: 13px; padding: 8px 12px; border: 1px solid var(--admin-border);
+    border-radius: 8px; color: var(--admin-text); resize: vertical;
+}
+.admin-form__field--full { grid-column: 1 / -1; }
+.admin-form__section-title { font-size: 14px; margin: 8px 0 -4px; padding-top: 12px; border-top: 1px solid var(--admin-border); }
+.admin-form__actions { display: flex; gap: 12px; margin-top: 20px; }

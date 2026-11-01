@@ -1,0 +1,28 @@
+{# Base commune — inline uniquement, les clients mail (Gmail, Outlook...) ignorent le CSS externe et souvent le <style> lui-même. #}
+<!DOCTYPE html>
+<html lang="fr">
+<head><meta charset="UTF-8"></head>
+<body style="margin:0;padding:0;background:#F6FEFB;font-family:Arial,Helvetica,sans-serif;">
+    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="padding:32px 0;">
+        <tr><td align="center">
+            <table role="presentation" width="480" cellpadding="0" cellspacing="0" style="background:#ffffff;border-radius:16px;overflow:hidden;">
+                <tr>
+                    <td style="background:linear-gradient(70deg,#025FAC,#04BDAF);padding:28px 32px;text-align:center;">
+                        <span style="color:#ffffff;font-size:18px;font-weight:bold;">Fin<span style="font-weight:900;">Pharma</span></span>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="padding:32px;color:#4A4763;font-size:14px;line-height:1.6;">
+                        {% block content %}{% endblock %}
+                    </td>
+                </tr>
+                <tr>
+                    <td style="padding:16px 32px 28px;color:#9A9A9A;font-size:11px;text-align:center;">
+                        FinPharma — L'annuaire de santé du Maroc.
+                    </td>
+                </tr>
+            </table>
+        </td></tr>
+    </table>
+</body>
+</html>

@@ -1,0 +1,152 @@
+{% extends 'base.html.twig' %}
+
+{# templates/v1/establishment/create.html.twig
+   Un seul template pour les 3 types plutôt que 3 quasi-identiques — la
+   variation (spécialités pour un médecin, rien de plus pour labo/pharmacie)
+   est gérée par `type`. La soumission POST vers l'API existante
+   (POST /api/v1/pharmacies pour pharmacie -- à créer en Phase 4e web-facing,
+   POST /api/v1/establishments/doctors, POST /api/v1/establishments/laboratories
+   -- Phase 4c) ; ce formulaire, côté web, nécessite un utilisateur connecté
+   (même règle que l'API : #[IsGranted('ROLE_USER')]), non géré ici (page
+   web pure), le formulaire pointe vers /connexion si l'utilisateur ne l'est pas. #}
+
+{% block body %}
+<div class="static-page">
+    {% include 'components/breadcrumbs.html.twig' with {items: [
+        {name: 'nav.home'|trans, url: path('v1_home', {_locale: app.request.locale})},
+        {name: 'nav.add_establishment'|trans, url: path('v1_establishment_choose', {_locale: app.request.locale})},
+        {name: ('establishment.add_'~type)|trans, url: null},
+    ]} %}
+
+    <header class="static-page__header">
+        <h1>{{ ('establishment.add_'~type)|trans }}</h1>
+        <p>{{ 'establishment.form_intro'|trans }}</p>
+    </header>
+
+    <form class="static-page__form" id="establishment-form" data-type="{{ type }}" method="post" enctype="multipart/form-data">
+        <label>
+            <span>{{ 'establishment.name'|trans }}</span>
+            <input type="text" name="name" required>
+        </label>
+
+        <label>
+            <span>{{ 'establishment.city'|trans }}</span>
+            <select name="cityId" required>
+                <option value="">{{ 'establishment.select_city'|trans }}</option>
+                {% for c in cities %}
+                    <option value="{{ c.id }}">{{ c.name }}</option>
+                {% endfor %}
+            </select>
+        </label>
+
+        <label>
+            <span>{{ 'establishment.address'|trans }}</span>
+            <input type="text" name="addressRaw" required>
+        </label>
+
+        {% if type == 'doctor' and specialties is defined %}
+            <label>
+                <span>{{ 'establishment.specialties'|trans }}</span>
+                <select name="specialtyIds" multiple>
+                    {% for s in specialties %}
+                        <option value="{{ s.id }}">{{ s.name }}</option>
+                    {% endfor %}
+                </select>
+            </label>
+            <label>
+                <span>{{ 'establishment.consultation_price'|trans }}</span>
+                <input type="number" name="consultationPrice" step="0.01">
+            </label>
+            <label>
+                <span>{{ 'establishment.order_number'|trans }}</span>
+                <input type="text" name="orderNumber">
+                <small>{{ 'establishment.order_number_hint'|trans }}</small>
+            </label>
+        {% endif %}
+
+        {% if type == 'laboratory' %}
+            <label>
+                <span>{{ 'establishment.accreditation'|trans }}</span>
+                <input type="text" name="accreditation">
+            </label>
+        {% endif %}
+
+        <label>
+            <span>{{ 'establishment.phone'|trans }}</span>
+            <input type="tel" name="phone" placeholder="+212 ...">
+        </label>
+        <label>
+            <span>{{ 'establishment.email'|trans }}</span>
+            <input type="email" name="email">
+        </label>
+        <label class="static-page__upload">
+            <span>{{ 'establishment.photo'|trans }}</span>
+            <input type="file" name="photo" accept="image/*">
+            <small>{{ 'establishment.photo_hint'|trans }}</small>
+        </label>
+
+        <p class="static-page__notice">{{ 'establishment.moderation_notice'|trans }}</p>
+        <p class="static-page__error" id="establishment-error" hidden></p>
+        <p class="static-page__success" id="establishment-success" hidden></p>
+
+        <button type="submit" class="btn btn--primary">{{ 'establishment.submit'|trans }}</button>
+    </form>
+</div>
+{% endblock %}
+
+{% block javascripts %}
+<script>
+if (!FinPharmaApi.isLoggedIn()) {
+    window.location.href = "{{ path('v1_login', {_locale: app.request.locale}) }}?next={{ app.request.pathInfo|url_encode }}";
+}
+
+document.getElementById('establishment-form').addEventListener('submit', async function (e) {
+    e.preventDefault();
+    var form = e.target;
+    var type = form.getAttribute('data-type');
+    var errorEl = document.getElementById('establishment-error');
+    var successEl = document.getElementById('establishment-success');
+    errorEl.hidden = true;
+    successEl.hidden = true;
+
+    // §Addendum D : la photo (fichier binaire) nécessite un endpoint d'upload
+    // séparé, non construit dans ce lot (cf. README Phase 4c "ce qui manque").
+    // On envoie donc ici uniquement les champs texte en JSON — le champ
+    // photo est ignoré pour l'instant côté soumission, pas juste caché.
+    var payload = {
+        name: form.name.value,
+        cityId: form.cityId.value,
+        addressRaw: form.addressRaw.value,
+        phone: form.phone.value || null,
+        email: form.email.value || null,
+    };
+
+    var endpoint = null;
+    if (type === 'pharmacy') {
+        endpoint = '/establishments/pharmacies';
+    } else if (type === 'doctor') {
+        endpoint = '/establishments/doctors';
+        payload.specialtyIds = Array.from(form.specialtyIds.selectedOptions).map(function (o) { return o.value; });
+        payload.consultationPrice = form.consultationPrice.value || null;
+        payload.orderNumber = form.orderNumber.value || null;
+    } else if (type === 'laboratory') {
+        endpoint = '/establishments/laboratories';
+        payload.accreditation = form.accreditation.value || null;
+    }
+
+    try {
+        var res = await FinPharmaApi.request(endpoint, { method: 'POST', body: JSON.stringify(payload) });
+        if (!res.ok) {
+            var err = await res.json().catch(function () { return {}; });
+            throw new Error(err.error || 'submit_failed');
+        }
+        successEl.textContent = "{{ 'establishment.submit_success'|trans }}";
+        successEl.hidden = false;
+        form.reset();
+    } catch (err) {
+        errorEl.textContent = "{{ 'establishment.submit_error'|trans }}";
+        errorEl.hidden = false;
+    }
+});
+</script>
+{% endblock %}

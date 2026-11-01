@@ -1,0 +1,22 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+<div class="static-page">
+    {% include 'components/breadcrumbs.html.twig' with {items: [{name: 'nav.home'|trans, url: path('v1_home', {_locale: app.request.locale})}, {name: 'footer.services'|trans, url: null}]} %}
+
+    <header class="static-page__header"><h1>{{ 'footer.services'|trans }}</h1></header>
+
+    <div class="services__inner static-page__services">
+        <a href="{{ path('v1_service_find_medicine', {_locale: app.request.locale}) }}" class="service-card">
+            <span class="service-card__icon"><svg width="26" height="26" viewBox="0 0 24 24" fill="none"><rect x="3" y="8" width="18" height="8" rx="4" stroke="currentColor" stroke-width="1.5"/><path d="M12 8v8" stroke="currentColor" stroke-width="1.5"/></svg></span>
+            <h2>{{ 'footer.find_medicine'|trans }}</h2>
+            <p>{{ 'service.find_medicine_desc'|trans }}</p>
+        </a>
+        <a href="{{ path('v1_service_assistant', {_locale: app.request.locale}) }}" class="service-card service-card--accent">
+            <span class="service-card__icon"><svg width="26" height="26" viewBox="0 0 24 24" fill="none"><path d="M9 3h6M10 3v5l-5 9a2 2 0 001.7 3h10.6a2 2 0 001.7-3l-5-9V3" stroke="currentColor" stroke-width="1.5"/></svg></span>
+            <h2>{{ 'footer.assistant'|trans }}</h2>
+            <p>{{ 'service.assistant_desc'|trans }}</p>
+        </a>
+    </div>
+</div>
+{% endblock %}

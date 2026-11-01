@@ -1,0 +1,16 @@
+/* À ajouter à la fin de public/css/admin.css (pas un fichier séparé à charger en plus). */
+
+.admin-status-badge { display: inline-block; padding: 3px 10px; border-radius: 12px; font-size: 11px; font-weight: 700; }
+.admin-status-badge--draft { background: #F0F0F0; color: #6B7280; }
+.admin-status-badge--published { background: #E9F2FF; color: var(--admin-secondary); }
+.admin-status-badge--accepted,
+.admin-status-badge--in_progress { background: #FFF3CD; color: #8A6D3B; }
+.admin-status-badge--completed { background: var(--admin-success-bg); color: var(--admin-success); }
+.admin-status-badge--expired,
+.admin-status-badge--cancelled { background: var(--admin-danger-bg); color: var(--admin-danger); }
+
+.admin-result-list { margin: 8px 0 0; padding-left: 18px; font-size: 12px; color: var(--admin-text-muted); }
+.admin-muted { color: var(--admin-text-muted); font-size: 12px; }
+
+.admin-pagination { display: flex; align-items: center; gap: 16px; margin-top: 16px; font-size: 13px; }
+.admin-pagination a { color: var(--admin-primary); font-weight: 600; }

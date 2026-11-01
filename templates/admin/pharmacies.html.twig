@@ -1,0 +1,34 @@
+{% extends 'admin/base.html.twig' %}
+{% block title %}Pharmacies en attente{% endblock %}
+
+{% block body %}
+<h1 class="admin-page-title">Pharmacies en attente ({{ pharmacies|length }})</h1>
+
+<div class="admin-table-wrapper">
+    <table class="admin-table">
+        <thead>
+            <tr><th>Nom</th><th>Ville</th><th>Propriétaire</th><th>Soumise le</th><th></th></tr>
+        </thead>
+        <tbody>
+            {% for pharmacy in pharmacies %}
+                <tr>
+                    <td>{{ pharmacy.name }}</td>
+                    <td>{{ pharmacy.city.name }}</td>
+                    <td>{{ pharmacy.owner ? pharmacy.owner.email : '—' }}</td>
+                    <td>{{ pharmacy.createdAt|date('d/m/Y H:i') }}</td>
+                    <td class="admin-table__actions">
+                        <form method="post" action="{{ path('admin_pharmacies_approve', {id: pharmacy.id}) }}">
+                            <button type="submit" class="admin-btn admin-btn--approve">Approuver</button>
+                        </form>
+                        <form method="post" action="{{ path('admin_pharmacies_suspend', {id: pharmacy.id}) }}" onsubmit="return confirm('Suspendre cette pharmacie ?');">
+                            <button type="submit" class="admin-btn admin-btn--reject">Suspendre</button>
+                        </form>
+                    </td>
+                </tr>
+            {% else %}
+                <tr><td colspan="5" class="admin-empty-state">Aucune pharmacie en attente.</td></tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

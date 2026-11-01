@@ -1,0 +1,20 @@
+{# templates/components/card_doctor.html.twig — Attend: doctor (entité) #}
+<article class="entity-card" data-pharmacy-card="{{ doctor.id }}">
+    <div class="entity-card__thumb entity-card__thumb--doctor">
+        <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.5-7 8-7s8 3 8 7"/></svg>
+        {% if doctor.isVerified %}<span class="badge badge--verified">{{ 'establishment.verified'|trans }}</span>{% endif %}
+    </div>
+    <div class="entity-card__body">
+        {% if doctor.specialties|length > 0 %}<p class="entity-card__eyebrow">{{ doctor.specialties|map(s => s.name)|join(', ') }}</p>{% endif %}
+        <h3><a href="{{ path('v1_doctor_show', {_locale: app.request.locale, slug: doctor.slug ~ '-' ~ doctor.uid}) }}">{{ doctor.name }}</a></h3>
+        <p class="entity-card__address">{{ doctor.addressRaw }}, {{ doctor.city.name }}</p>
+        <div class="entity-card__meta">
+            {% if doctor.phone %}<a href="tel:{{ doctor.phone }}" class="entity-card__phone">{{ doctor.phone }}</a>{% endif %}
+            {% if doctor.consultationPrice %}<span class="entity-card__price">{{ doctor.consultationPrice }} DH</span>{% endif %}
+        </div>
+        <div class="pharmacy-card__actions">
+            <a href="#doctor-map" data-view-on-map>{{ 'listing.view_on_map'|trans }}</a>
+            {% if doctor.lat and doctor.lng %}<a href="https://www.google.com/maps/dir/?api=1&destination={{ doctor.lat }},{{ doctor.lng }}" target="_blank" rel="noopener">{{ 'pharmacy.directions'|trans }}</a>{% endif %}
+        </div>
+    </div>
+</article>

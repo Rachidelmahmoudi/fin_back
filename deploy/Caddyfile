@@ -1,0 +1,16 @@
+{
+	frankenphp
+	email {$ACME_EMAIL}
+}
+
+www.finpharma.ma {
+	redir https://finpharma.ma{uri} permanent
+}
+
+finpharma.ma, api.finpharma.ma {
+	root * /app/public
+	encode zstd gzip
+	@static path *.css *.js *.png *.jpg *.jpeg *.webp *.svg *.woff2 *.ico
+	header @static Cache-Control "public, max-age=31536000, immutable"
+	php_server
+}

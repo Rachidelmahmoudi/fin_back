@@ -1,0 +1,60 @@
+{% extends 'admin/base.html.twig' %}
+{% block title %}Médicaments{% endblock %}
+
+{% block body %}
+<div class="admin-page-header">
+    <h1 class="admin-page-title">Médicaments ({{ totalCount }})</h1>
+    <a href="{{ path('admin_medicines_new') }}" class="admin-btn admin-btn--approve">+ Ajouter un médicament</a>
+</div>
+
+<form method="get" class="admin-filter-bar">
+    <input type="text" name="q" value="{{ q }}" placeholder="Rechercher par nom...">
+    <label class="admin-checkbox-inline">
+        <input type="checkbox" name="needsReview" value="1" {{ needsReviewOnly ? 'checked' : '' }} onchange="this.form.submit()">
+        En attente de vérification uniquement
+    </label>
+    <button type="submit" class="admin-btn admin-btn--approve">Filtrer</button>
+</form>
+
+<div class="admin-table-wrapper">
+    <table class="admin-table">
+        <thead>
+            <tr><th>Nom</th><th>DCI</th><th>Dosage</th><th>Laboratoire</th><th>Prix</th><th>Statut</th><th></th></tr>
+        </thead>
+        <tbody>
+            {% for m in medicines %}
+                <tr>
+                    <td>{{ m.name }}</td>
+                    <td>{{ m.dci ? m.dci.name : '—' }}</td>
+                    <td>{{ m.dosageValue ? m.dosageValue ~ ' ' ~ (m.dosageUnit ?? '') : '—' }}</td>
+                    <td>{{ m.manufacturer ?? '—' }}</td>
+                    <td>{{ m.priceCommercial ? m.priceCommercial ~ ' DH' : '—' }}</td>
+                    <td>
+                        {% if m.needsReview %}
+                            <span class="admin-status-badge admin-status-badge--accepted">À vérifier</span>
+                        {% else %}
+                            <span class="admin-status-badge admin-status-badge--completed">OK</span>
+                        {% endif %}
+                    </td>
+                    <td class="admin-table__actions">
+                        <a href="{{ path('admin_medicines_edit', {id: m.id}) }}" class="admin-btn admin-btn--approve">Éditer</a>
+                        <form method="post" action="{{ path('admin_medicines_delete', {id: m.id}) }}" onsubmit="return confirm('Supprimer ce médicament définitivement ?');">
+                            <button type="submit" class="admin-btn admin-btn--reject">Supprimer</button>
+                        </form>
+                    </td>
+                </tr>
+            {% else %}
+                <tr><td colspan="7" class="admin-empty-state">Aucun médicament.</td></tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+{% if totalPages > 1 %}
+    <div class="admin-pagination">
+        {% if page > 1 %}<a href="?page={{ page - 1 }}&q={{ q }}&needsReview={{ needsReviewOnly ? 1 : 0 }}">← Précédent</a>{% endif %}
+        <span>Page {{ page }} / {{ totalPages }}</span>
+        {% if page < totalPages %}<a href="?page={{ page + 1 }}&q={{ q }}&needsReview={{ needsReviewOnly ? 1 : 0 }}">Suivant →</a>{% endif %}
+    </div>
+{% endif %}
+{% endblock %}

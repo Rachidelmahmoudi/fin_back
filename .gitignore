@@ -1,0 +1,28 @@
+###> symfony/framework-bundle ###
+/.env.local
+/.env.local.php
+/.env.*.local
+/config/secrets/prod/prod.decrypt.private.php
+/public/bundles/
+/var/
+/vendor/
+###< symfony/framework-bundle ###
+
+###> lexik/jwt-authentication-bundle ###
+/config/jwt/*.pem
+###< lexik/jwt-authentication-bundle ###
+
+###> phpunit/phpunit ###
+/phpunit.xml
+.phpunit.result.cache
+###< phpunit/phpunit ###
+
+###> doctrine/doctrine-bundle ###
+###< doctrine/doctrine-bundle ###
+
+.DS_Store
+
+# Fichiers uploadés par les utilisateurs (LocalFileStorage) — pas versionnés,
+# le dossier lui-même doit exister (gardé via .gitkeep) mais son contenu non.
+/public/uploads/*
+!/public/uploads/.gitkeep

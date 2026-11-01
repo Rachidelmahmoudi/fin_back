@@ -1,0 +1,40 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+<div class="static-page static-page--narrow">
+    <header class="static-page__header"><h1>{{ 'auth.register_title'|trans }}</h1></header>
+
+    <form class="static-page__form" id="register-form">
+        <label><span>{{ 'auth.email'|trans }}</span><input type="email" name="email" required></label>
+        <label><span>{{ 'auth.phone'|trans }}</span><input type="tel" name="phone" placeholder="+212 ..."></label>
+        <label><span>{{ 'auth.password'|trans }}</span><input type="password" name="password" minlength="8" required></label>
+        <p class="static-page__error" id="register-error" hidden></p>
+        <button type="submit" class="btn btn--primary">{{ 'auth.register_submit'|trans }}</button>
+    </form>
+
+    <p class="static-page__switch">{{ 'auth.has_account'|trans }} <a href="{{ path('v1_login', {_locale: app.request.locale}) }}">{{ 'auth.login_submit'|trans }}</a></p>
+</div>
+{% endblock %}
+
+{% block javascripts %}
+<script>
+document.getElementById('register-form').addEventListener('submit', async function (e) {
+    e.preventDefault();
+    var errorEl = document.getElementById('register-error');
+    errorEl.hidden = true;
+    var form = e.target;
+    try {
+        await FinPharmaApi.register({
+            email: form.email.value,
+            password: form.password.value,
+            phone: form.phone.value || null,
+            locale: "{{ app.request.locale }}",
+        });
+        window.location.href = "{{ path('v1_establishment_choose', {_locale: app.request.locale}) }}";
+    } catch (err) {
+        errorEl.textContent = "{{ 'auth.register_error'|trans }}";
+        errorEl.hidden = false;
+    }
+});
+</script>
+{% endblock %}

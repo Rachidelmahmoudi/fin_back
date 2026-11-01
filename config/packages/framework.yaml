@@ -1,0 +1,50 @@
+framework:
+    secret: '%env(APP_SECRET)%'
+    default_locale: fr
+    # §32 du cahier des charges — /fr/ et /ar/ (décision confirmée, EN retiré).
+    # {_locale} est extrait de l'URL par chaque route (voir controllers v1/*),
+    # donc pas de RequestListener global de détection de locale ici.
+    enabled_locales: ['fr', 'ar']
+
+    csrf_protection: false # API stateless JWT (§18) ; le site web n'a pas de formulaire Symfony Form classique dans ce lot (formulaires HTML -> fetch JSON, cf. Phase 4f)
+
+    http_method_override: false
+    # Renommé "handle_all_throwables" en Symfony 7.4 (était
+    # "handle_all_throwable_errors" en 7.1, ciblé initialement par ce
+    # projet) — même option, juste un nom de clé différent selon la version.
+    handle_all_throwables: true
+
+    uid:
+        default_uuid_version: 7
+        time_based_uuid_version: 7
+
+    # Sessions activées globalement pour permettre l'auth par session du
+    # back-office admin (/admin) et les flash messages Twig — mais les
+    # firewalls API (Phase 4b, `stateless: true` explicite dans
+    # security.yaml) n'en créent jamais malgré cette activation globale :
+    # `stateless: true` sur un firewall Symfony désactive la session
+    # pour CE firewall précis, indépendamment de ce réglage.
+    session:
+        enabled: true
+        cookie_secure: auto
+        cookie_samesite: lax
+
+    php_errors:
+        log: true
+
+    # §Correctif : le bloc rate_limiter a été RETIRÉ d'ici. Il était
+    # dupliqué avec config/packages/rate_limiter.yaml — ce fichier-ci ne
+    # déclarait que les noms des limiteurs avec une valeur vide (~), en
+    # supposant que rate_limiter.yaml compléterait chaque définition
+    # (policy/limit/interval). Symfony 7.4 fusionne mal ce cas précis
+    # (un fichier "vide" + un fichier "complet" pour la même clé
+    # "limiters.<nom>") et exige que "policy" soit déjà présent au moment
+    # où CE fichier est évalué. rate_limiter.yaml contient déjà la
+    # définition complète de chaque limiteur à lui seul — pas besoin de
+    # cette déclaration en double ici.
+
+when@test:
+    framework:
+        test: true
+        session:
+            storage_factory_id: session.storage.factory.mock_file

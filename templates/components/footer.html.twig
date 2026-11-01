@@ -1,0 +1,37 @@
+{# templates/components/footer.html.twig #}
+<footer class="site-footer">
+    <div class="site-footer__inner">
+        <div class="site-footer__brand">
+            <img src="{{ asset('images/logo-icon.png') }}" alt="FinPharma" width="30" height="30" class="site-footer__logo-icon">
+            <span class="site-footer__logo">Fin<strong>Pharma</strong></span>
+            <p>{{ 'footer.tagline'|trans }}</p>
+        </div>
+
+        <div class="site-footer__col">
+            <h3>{{ 'footer.discover'|trans }}</h3>
+            <a href="{{ path('v1_pharmacy_list', {_locale: app.request.locale, city: null}) }}">{{ 'nav.pharmacies'|trans }}</a>
+            <a href="{{ path('v1_pharmacy_duty_list', {_locale: app.request.locale, city: null}) }}">{{ 'footer.pharmacies_duty'|trans }}</a>
+            <a href="{{ path('v1_doctor_list', {_locale: app.request.locale}) }}">{{ 'nav.doctors'|trans }}</a>
+            <a href="{{ path('v1_laboratory_list', {_locale: app.request.locale, city: null}) }}">{{ 'nav.laboratories'|trans }}</a>
+            <a href="{{ path('v1_medicine_list', {_locale: app.request.locale}) }}">{{ 'nav.medicines'|trans }}</a>
+        </div>
+
+        <div class="site-footer__col">
+            <h3>{{ 'footer.services'|trans }}</h3>
+            <a href="{{ path('v1_service_find_medicine', {_locale: app.request.locale}) }}">{{ 'footer.find_medicine'|trans }}</a>
+            <a href="{{ path('v1_service_assistant', {_locale: app.request.locale}) }}">{{ 'footer.assistant'|trans }}</a>
+            <a href="{{ path('v1_pro_landing', {_locale: app.request.locale}) }}">{{ 'nav.pro'|trans }}</a>
+            <a href="{{ path('v1_establishment_choose', {_locale: app.request.locale}) }}">{{ 'nav.add_establishment'|trans }}</a>
+        </div>
+
+        <div class="site-footer__col">
+            <h3>{{ 'footer.about'|trans }}</h3>
+            <a href="{{ path('v1_blog_index', {_locale: app.request.locale}) }}">{{ 'nav.blog'|trans }}</a>
+            <a href="{{ path('v1_contact', {_locale: app.request.locale}) }}">{{ 'footer.contact'|trans }}</a>
+        </div>
+    </div>
+
+    <div class="site-footer__bottom">
+        <p>&copy; {{ "now"|date("Y") }} FinPharma — {{ 'footer.rights'|trans }}</p>
+    </div>
+</footer>

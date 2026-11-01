@@ -1,0 +1,111 @@
+{% extends 'base.html.twig' %}
+
+{# Page privée : ne doit pas être indexée. #}
+{% block stylesheets %}<meta name="robots" content="noindex,nofollow">{% endblock %}
+
+{% block body %}
+{% set ar = app.request.locale == 'ar' %}
+{% set labels = {
+    types: {pharmacy: ar ? 'صيدلية' : 'Pharmacie', doctor: ar ? 'عيادة طبية' : 'Cabinet médical', laboratory: ar ? 'مختبر' : 'Laboratoire'},
+    statuses: {
+        PENDING_REVIEW: ar ? 'قيد المراجعة' : 'En attente de validation',
+        PUBLISHED: ar ? 'منشورة' : 'Publié',
+        REJECTED: ar ? 'مرفوضة' : 'Rejeté',
+        SUSPENDED: ar ? 'معلّقة' : 'Suspendu',
+        DRAFT: ar ? 'مسودة' : 'Brouillon'
+    },
+    reason: ar ? 'سبب الرفض :' : 'Motif du rejet :',
+    viewPublic: ar ? 'عرض الصفحة العامة' : 'Voir la page publique',
+    empty: ar ? 'ليس لديك أي مؤسسة بعد.' : 'Vous n\'avez pas encore d\'établissement.',
+    loginPrompt: ar ? 'سجّل الدخول للوصول إلى مؤسساتك.' : 'Connectez-vous pour accéder à vos établissements.',
+    error: ar ? 'تعذّر تحميل مؤسساتك.' : 'Impossible de charger vos établissements.',
+    pendingHint: ar ? 'سيصلك بريد إلكتروني عند الموافقة على مؤسستك.' : 'Vous recevrez un email dès que votre établissement sera approuvé.'
+} %}
+{% set publicUrls = {
+    pharmacy: path('v1_pharmacy_show', {_locale: app.request.locale, slug: '__SLUG__'}),
+    doctor: path('v1_doctor_show', {_locale: app.request.locale, slug: '__SLUG__'}),
+    laboratory: path('v1_laboratory_show', {_locale: app.request.locale, slug: '__SLUG__'})
+} %}
+
+<div class="owner-space">
+    <h1>{{ ar ? 'مساحتي' : 'Mon espace' }}</h1>
+    <p class="owner-space__subtitle">{{ ar ? 'مؤسساتك على FinPharma' : 'Vos établissements sur FinPharma' }}</p>
+
+    <div id="owner-list" class="owner-space__list" aria-live="polite"></div>
+
+    <a class="btn btn--primary owner-space__add" href="{{ path('v1_establishment_choose', {_locale: app.request.locale}) }}">
+        + {{ ar ? 'أضف مؤسسة' : 'Ajouter un établissement' }}
+    </a>
+</div>
+
+<script type="application/json" id="owner-config">{{ {labels: labels, publicUrls: publicUrls, loginUrl: path('v1_login', {_locale: app.request.locale})}|json_encode|replace({'</': '<\\/'})|raw }}</script>
+{% endblock %}
+
+{% block javascripts %}
+<script>
+(function () {
+    'use strict';
+    var config = JSON.parse(document.getElementById('owner-config').textContent);
+    var L = config.labels;
+    var list = document.getElementById('owner-list');
+
+    // Tout est construit avec textContent (jamais innerHTML) : noms et motifs de rejet
+    // viennent d'utilisateurs, et un innerHTML dessus serait une faille XSS stockée.
+    function el(tag, className, text) {
+        var node = document.createElement(tag);
+        if (className) { node.className = className; }
+        if (text !== undefined) { node.textContent = text; }
+        return node;
+    }
+
+    function message(text, linkUrl) {
+        list.replaceChildren();
+        var p = el('p', 'owner-space__message', text);
+        if (linkUrl) {
+            p.appendChild(document.createTextNode(' '));
+            var a = el('a', '', '→');
+            a.href = linkUrl;
+            p.appendChild(a);
+        }
+        list.appendChild(p);
+    }
+
+    function card(item) {
+        var c = el('article', 'owner-card');
+        c.appendChild(el('span', 'owner-card__type', L.types[item.type] || item.type));
+        c.appendChild(el('h2', 'owner-card__name', item.name));
+        c.appendChild(el('p', 'owner-card__city', item.cityName));
+        c.appendChild(el('span', 'owner-badge owner-badge--' + String(item.status).toLowerCase(), L.statuses[item.status] || item.status));
+
+        if (item.status === 'REJECTED' && item.rejectionReason) {
+            c.appendChild(el('p', 'owner-card__reason', L.reason + ' ' + item.rejectionReason));
+        }
+        if (item.status === 'PENDING_REVIEW') {
+            c.appendChild(el('p', 'owner-card__hint', L.pendingHint));
+        }
+        if (item.status === 'PUBLISHED' && config.publicUrls[item.type]) {
+            var link = el('a', 'owner-card__link', L.viewPublic);
+            link.href = config.publicUrls[item.type].replace('__SLUG__', encodeURIComponent(item.publicSlug));
+            c.appendChild(link);
+        }
+        return c;
+    }
+
+    if (!window.FinPharmaApi || !FinPharmaApi.isLoggedIn()) {
+        message(L.loginPrompt, config.loginUrl);
+        return;
+    }
+
+    FinPharmaApi.request('/me/establishments').then(function (res) {
+        if (res.status === 401) { message(L.loginPrompt, config.loginUrl); return null; }
+        if (!res.ok) { throw new Error('http_' + res.status); }
+        return res.json();
+    }).then(function (items) {
+        if (items === null) { return; }
+        if (!items.length) { message(L.empty); return; }
+        list.replaceChildren();
+        items.forEach(function (item) { list.appendChild(card(item)); });
+    }).catch(function () { message(L.error); });
+})();
+</script>
+{% endblock %}

@@ -1,0 +1,71 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+<div class="pharmacy-page">
+    {% include 'components/breadcrumbs.html.twig' with {
+        items: [
+            {name: 'nav.home'|trans, url: path('v1_home', {_locale: app.request.locale})},
+            {name: 'nav.laboratories'|trans, url: path('v1_laboratory_list', {_locale: app.request.locale, city: null})},
+            {name: laboratory.name, url: null},
+        ]
+    } %}
+
+    <div class="detail-page__header">
+        <div class="detail-page__photo">
+            {% if laboratory.isVerified %}<span class="badge badge--verified">{{ 'establishment.verified'|trans }}</span>{% endif %}
+        </div>
+        <div class="detail-page__title">
+            <h1>{{ laboratory.name }}</h1>
+            <p class="detail-page__address">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 22s8-7.5 8-13a8 8 0 10-16 0c0 5.5 8 13 8 13z"/><circle cx="12" cy="9" r="3"/></svg>
+                {{ laboratory.addressRaw }}, {{ laboratory.city.name }}
+            </p>
+        </div>
+        <div class="detail-page__share">
+            <button type="button" class="icon-btn" aria-label="{{ 'detail.favorite'|trans }}"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M20.8 4.6a5.5 5.5 0 00-7.8 0L12 5.6l-1-1a5.5 5.5 0 00-7.8 7.8l1 1L12 21l7.8-7.6 1-1a5.5 5.5 0 000-7.8z"/></svg></button>
+            <button type="button" class="icon-btn" aria-label="{{ 'detail.share'|trans }}"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="M8.6 13.5l6.8 4M15.4 6.5l-6.8 4"/></svg></button>
+        </div>
+    </div>
+
+    <div class="detail-page__layout">
+        <div class="detail-page__main">
+            {% if laboratory.labTests|length > 0 %}
+            <section class="detail-page__section">
+                <h2>{{ 'laboratory.tests_offered'|trans }}</h2>
+                <ul class="fact-list">
+                    {% for test in laboratory.labTests %}
+                        <li><span>{{ test.name }}{{ test.category ? ' — ' ~ test.category : '' }}</span><span>{{ test.price ? test.price ~ ' DH' : '—' }}</span></li>
+                    {% endfor %}
+                </ul>
+            </section>
+            {% endif %}
+
+            <section class="detail-page__section">
+                <h2>{{ 'detail.location'|trans }}</h2>
+                <div class="pharmacy-page__map" id="laboratory-map" data-map="detail" data-lat="{{ laboratory.lat }}" data-lng="{{ laboratory.lng }}" data-empty-label="{{ 'pharmacy.map_no_data'|trans }}"></div>
+            </section>
+
+            {% if nearby|length > 0 %}
+            <section class="detail-page__section">
+                <h2>{{ 'detail.nearby_labs'|trans({'%city%': laboratory.city.name}) }}</h2>
+                <div class="detail-page__nearby">
+                    {% for n in nearby %}{% include 'components/card_laboratory.html.twig' with {laboratory: n} %}{% endfor %}
+                </div>
+            </section>
+            {% endif %}
+        </div>
+
+        <aside class="contact-card">
+            {% if laboratory.phone %}<a href="tel:{{ laboratory.phone }}" class="btn btn--primary contact-card__cta">{{ 'pharmacy.call'|trans }} — {{ laboratory.phone }}</a>{% endif %}
+            {% if laboratory.lat and laboratory.lng %}<a href="https://www.google.com/maps/dir/?api=1&destination={{ laboratory.lat }},{{ laboratory.lng }}" target="_blank" rel="noopener" class="btn btn--outline contact-card__cta">{{ 'pharmacy.directions'|trans }}</a>{% endif %}
+            <ul class="contact-card__facts">
+                {% if laboratory.accreditation %}<li><span>{{ 'establishment.accreditation'|trans }}</span><span>{{ laboratory.accreditation }}</span></li>{% endif %}
+                {% if laboratory.email %}<li><span>{{ 'establishment.email'|trans }}</span><a href="mailto:{{ laboratory.email }}">{{ laboratory.email }}</a></li>{% endif %}
+                <li><span>{{ 'detail.city'|trans }}</span><span>{{ laboratory.city.name }}</span></li>
+            </ul>
+        </aside>
+    </div>
+</div>
+{% endblock %}
+
+{% block javascripts %}<script defer src="{{ asset('js/map.js') }}"></script>{% endblock %}

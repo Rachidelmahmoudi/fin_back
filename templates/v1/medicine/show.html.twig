@@ -1,0 +1,58 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+<div class="medicine-page">
+    {% include 'components/breadcrumbs.html.twig' with {
+        items: [
+            {name: 'nav.home'|trans, url: path('v1_home', {_locale: app.request.locale})},
+            {name: 'nav.medicines'|trans, url: path('v1_medicine_list', {_locale: app.request.locale})},
+            {name: medicine.name, url: null},
+        ]
+    } %}
+
+    <div class="medicine-page__layout">
+        <div>
+            <h1>{{ medicine.name }}</h1>
+            <p class="medicine-page__subtitle">
+                {{ medicine.dci ? medicine.dci.name : '' }}
+                {{ medicine.dosageValue ? ' — ' ~ medicine.dosageValue ~ ' ' ~ medicine.dosageUnit : '' }}
+                {{ medicine.presentation ? ' — ' ~ medicine.presentation : '' }}
+            </p>
+
+            {% if medicine.ppvCnss %}<span class="badge badge--open">{{ 'medicine.cnss_reimbursed'|trans }}{{ medicine.reimbursementRate ? ' (' ~ (medicine.reimbursementRate * 100)|round ~ '%)' : '' }}</span>{% endif %}
+
+            {% if medicine.indications %}
+                <section class="medicine-page__section"><h2>{{ 'medicine.indications'|trans }}</h2><p>{{ medicine.indications }}</p></section>
+            {% endif %}
+            {% if medicine.contraindications %}
+                <section class="medicine-page__section"><h2>{{ 'medicine.contraindications'|trans }}</h2><p>{{ medicine.contraindications }}</p></section>
+            {% endif %}
+            {% if medicine.precautions %}
+                <section class="medicine-page__section"><h2>{{ 'medicine.precautions'|trans }}</h2><p>{{ medicine.precautions }}</p></section>
+            {% endif %}
+
+            {% if similar|length > 0 %}
+                <section class="medicine-page__section">
+                    <h2>{{ 'medicine.similar'|trans }}</h2>
+                    <div class="medicine-grid medicine-grid--compact">
+                        {% for m in similar %}
+                            {% include 'components/card_medicine.html.twig' with {medicine: m} %}
+                        {% endfor %}
+                    </div>
+                </section>
+            {% endif %}
+        </div>
+
+        <aside class="medicine-page__sidebar">
+            {% set price = medicine.ppvCnss ?? medicine.priceCommercial %}
+            {% if price %}<div class="medicine-page__price">{{ price }} DH</div>{% endif %}
+            <ul class="medicine-page__facts">
+                {% if medicine.manufacturer %}<li><span>{{ 'medicine.manufacturer'|trans }}</span><span>{{ medicine.manufacturer }}</span></li>{% endif %}
+                {% if medicine.therapeuticClass %}<li><span>{{ 'medicine.therapeutic_class'|trans }}</span><span>{{ medicine.therapeuticClass }}</span></li>{% endif %}
+                {% if medicine.form %}<li><span>{{ 'medicine.form'|trans }}</span><span>{{ medicine.form }}</span></li>{% endif %}
+                {% if medicine.status %}<li><span>{{ 'medicine.status'|trans }}</span><span>{{ medicine.status }}</span></li>{% endif %}
+            </ul>
+        </aside>
+    </div>
+</div>
+{% endblock %}

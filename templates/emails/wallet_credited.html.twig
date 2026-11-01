@@ -1,0 +1,9 @@
+{% extends 'emails/_layout.html.twig' %}
+{% block content %}
+    <h1 style="font-size:18px;color:#015EAB;margin:0 0 16px;">Portefeuille crédité 💰</h1>
+    <p>Bonjour,</p>
+    <p>Votre recharge de <strong>{{ creditedAmount }} MAD</strong> a été confirmée et ajoutée à votre solde.</p>
+    <p style="background:#F6FEFB;border-radius:8px;padding:12px 16px;font-size:16px;font-weight:bold;color:#04BDAF;">
+        Nouveau solde : {{ newBalance }} MAD
+    </p>
+{% endblock %}

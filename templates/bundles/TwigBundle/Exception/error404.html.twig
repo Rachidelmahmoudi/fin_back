@@ -1,0 +1,27 @@
+{# Pages d'erreur volontairement AUTONOMES (pas d'extends base.html.twig) :
+   si l'erreur vient d'un service cassé, hériter du layout complet (qui
+   appelle plusieurs routes/services dans le header) risquerait une erreur
+   en cascade qui masquerait la vraie erreur d'origine. CSS minimal inline. #}
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Page introuvable — FinPharma</title>
+<style>
+body { margin:0; font-family:-apple-system,'Poppins',sans-serif; background:#FDFDFD; color:#1F2333; display:flex; align-items:center; justify-content:center; min-height:100vh; text-align:center; padding:24px; }
+.error-code { font-size:72px; font-weight:700; background:linear-gradient(115deg,#015EAB,#04BDAF); -webkit-background-clip:text; background-clip:text; color:transparent; }
+h1 { font-size:22px; margin:12px 0 8px; }
+p { color:#6B7280; margin-bottom:24px; }
+a { display:inline-block; background:#04BDAF; color:#fff; text-decoration:none; padding:12px 24px; border-radius:11px; font-weight:600; }
+</style>
+</head>
+<body>
+<div>
+    <div class="error-code">404</div>
+    <h1>Page introuvable</h1>
+    <p>La page que vous cherchez n'existe pas ou a été déplacée.</p>
+    <a href="/fr/">Retour à l'accueil</a>
+</div>
+</body>
+</html>

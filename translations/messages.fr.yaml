@@ -1,0 +1,237 @@
+nav:
+    home: Accueil
+    pharmacies: Pharmacies
+    doctors: Médecins
+    laboratories: Laboratoires
+    medicines: Médicaments
+    blog: Blog
+    add_establishment: Ajouter mon établissement
+    pro: Espace pro
+    my_space: Mon espace
+
+
+home:
+    hero_title: Trouvez une pharmacie, un médecin ou un médicament au Maroc
+    hero_subtitle: Pharmacies de garde, laboratoires d'analyses et catalogue de médicaments, partout au Maroc.
+    search_placeholder: Rechercher une pharmacie, une ville...
+    search_placeholder_doctor: Rechercher un médecin, une spécialité...
+    search_placeholder_lab: Rechercher un laboratoire, une ville...
+    search_cta: Rechercher
+    how_title: Comment ça marche
+    how_subtitle: Trois étapes pour trouver ce dont vous avez besoin, où que vous soyez au Maroc.
+    how_step1_title: Recherchez
+    how_step1_desc: Par ville, quartier ou géolocalisation — pharmacies, médecins, laboratoires ou médicaments.
+    how_step2_title: Comparez
+    how_step2_desc: Distance, horaires, statut de garde, prix des analyses ou des médicaments.
+    how_step3_title: Contactez
+    how_step3_desc: Appelez directement ou lancez l'itinéraire vers l'établissement choisi.
+    service_pharmacies: Toutes les pharmacies
+    service_pharmacies_desc: Trouvez la pharmacie la plus proche de vous.
+    service_duty: Pharmacies de garde
+    service_duty_desc: Ouvertes 24h/24 quand vous en avez besoin.
+    service_labs: Laboratoires d'analyses
+    service_labs_desc: Comparez les prix et trouvez un laboratoire proche.
+    service_medicines: Médicaments
+    service_medicines_desc: Consultez prix, DCI et remboursement CNSS.
+    browse_title: Trouvez votre établissement
+    browse_subtitle: Parcourez les pharmacies par ville ou les médecins par spécialité.
+    browse_by_city: Par ville
+    browse_by_specialty: Médecins par spécialité
+    browse_no_data: Bientôt disponible dans votre région.
+    browse_more: Voir plus →
+    app_eyebrow: Application mobile
+    app_title: Téléchargez l'application FinPharma
+    app_desc: Pharmacies de garde en un clic, Ask IA, déchiffrement d'ordonnance et gestion de pharmacie — directement sur votre téléphone.
+    app_store: App Store
+    google_play: Google Play
+    cta_establishment_title: Vous gérez une pharmacie, un cabinet ou un laboratoire ?
+    cta_establishment_desc: Ajoutez votre établissement gratuitement et soyez visible par des milliers de patients.
+
+listing:
+    title_all: Pharmacies à %city%
+    title_duty: Pharmacies de garde à %city%
+    title_open: Pharmacies ouvertes à %city%
+    all_cities: toutes villes
+    title_all_morocco: Pharmacies au Maroc
+    title_duty_morocco: Pharmacies de garde au Maroc
+    title_open_morocco: Pharmacies ouvertes au Maroc
+    results: résultats
+    search_placeholder: Rechercher par nom ou adresse
+    filters: Filtres
+    empty: Aucune pharmacie ne correspond à votre recherche.
+    map_requires_js: Activez JavaScript pour afficher la carte.
+    sort_by: Trier par
+    sort_closest: Plus proche
+    sort_name: Nom (A-Z)
+    specialty: Spécialité
+    all: Toutes
+    previous: Précédent
+    next: Suivant
+    page: Page
+    view_on_map: Voir sur la carte
+    map_no_data: Localisation non disponible pour ces résultats.
+    showing: "%count% sur %total% résultats"
+
+pharmacy:
+    on_duty: De garde
+    open_now: Ouvert maintenant
+    call: Appeler
+    directions: Itinéraire
+    hours: Horaires d'ouverture
+    map_no_data: Localisation non disponible.
+
+days:
+    1: Lundi
+    2: Mardi
+    3: Mercredi
+    4: Jeudi
+    5: Vendredi
+    6: Samedi
+    7: Dimanche
+
+detail:
+    favorite: Ajouter aux favoris
+    share: Partager
+    location: Localisation
+    website: Site web
+    city: Ville
+    nearby: Autres pharmacies à %city%
+    nearby_doctors: Autres médecins à %city%
+    nearby_labs: Autres laboratoires à %city%
+
+footer:
+    tagline: L'annuaire de santé du Maroc — pharmacies, médecins, laboratoires et médicaments.
+    discover: Découvrir
+    services: Services
+    about: À propos
+    find_medicine: Trouver un médicament
+    assistant: Assistant pharmaceutique
+    pharmacies_duty: Pharmacies de garde
+    contact: Contact
+    rights: Tous droits réservés.
+
+establishment:
+    verified: Vérifié
+    choose_intro: Ajoutez gratuitement votre établissement et soyez visible par des milliers de patients.
+    add_pharmacy: Ajouter ma pharmacie
+    add_doctor: Ajouter mon cabinet
+    add_laboratory: Ajouter mon laboratoire
+    form_intro: Les informations seront vérifiées par notre équipe avant publication.
+    name: Nom de l'établissement
+    city: Ville
+    select_city: Sélectionnez votre ville
+    address: Adresse
+    specialties: Spécialités
+    consultation_price: Prix de consultation (DH)
+    order_number: Numéro d'ordre
+    order_number_hint: Optionnel — aide à la vérification de votre profil.
+    accreditation: Accréditation / certification
+    phone: Téléphone
+    email: Email
+    photo: Photo de l'établissement
+    moderation_notice: Votre établissement sera visible publiquement après validation par notre équipe (généralement sous 48h).
+    submit: Soumettre pour validation
+    photo_hint: L'envoi de photo sera activé prochainement.
+    pharmacy_not_wired: L'ajout de pharmacie via le site est en cours de finalisation — contactez-nous directement pour le moment.
+    submit_success: Votre demande a été envoyée. Nous la validerons prochainement.
+    submit_error: Impossible d'envoyer la demande. Réessayez.
+
+doctor:
+    consultation_price: Prix de consultation
+    about: À propos
+
+laboratory:
+    tests_available: analyses disponibles
+    tests_offered: Analyses proposées
+
+medicine:
+    search_placeholder: Rechercher par nom ou DCI
+    cnss_only: Remboursés CNSS uniquement
+    cnss_reimbursed: Remboursé CNSS
+    indications: Indications
+    contraindications: Contre-indications
+    precautions: Précautions
+    manufacturer: Laboratoire
+    therapeutic_class: Classe thérapeutique
+    form: Forme
+    status: Statut
+    similar: Médicaments similaires
+
+service:
+    find_medicine_desc: Recherchez un médicament auprès des pharmacies partenaires proches de vous.
+    assistant_desc: Service de déchiffrement d'ordonnances pour pharmaciens et assistants.
+    find_medicine_intro: Indiquez le médicament recherché et votre ville — nous vous mettons en relation avec les pharmacies partenaires qui l'ont en stock.
+    medicine_name: Médicament recherché
+    your_city: Votre ville
+    upload_prescription: Joindre une ordonnance (optionnel)
+    submit_search: Rechercher auprès des pharmacies partenaires
+    assistant_intro: Un service pour les pharmaciens et assistants qui ont besoin d'aide pour déchiffrer une ordonnance manuscrite.
+    assistant_disclaimer: Ce service n'est pas un diagnostic médical. Il aide uniquement à identifier les médicaments prescrits sur une ordonnance existante.
+    assistant_cta_app: Ce service est disponible dans l'application mobile FinPharma.
+    download_app: Télécharger l'application
+
+blog:
+    coming_soon: Le blog FinPharma arrive bientôt — articles santé, médicaments et pharmacie au Maroc.
+
+contact:
+    name: Nom
+    email: Email
+    message: Message
+    send: Envoyer
+
+auth:
+    login_title: Connexion
+    register_title: Créer un compte
+    email: Email
+    phone: Téléphone
+    password: Mot de passe
+    login_submit: Se connecter
+    register_submit: Créer mon compte
+    login_error: Email ou mot de passe incorrect.
+    register_error: Impossible de créer le compte. Cet email est peut-être déjà utilisé.
+    no_account: Pas encore de compte ?
+    has_account: Déjà un compte ?
+    create_account: Créer un compte
+    logout: Déconnexion
+
+pro:
+    eyebrow: Espace professionnels de santé
+    title: Faites connaître votre établissement à des milliers de patients
+    lead: Pharmaciens, médecins et laboratoires, créez votre fiche gratuite sur FinPharma. Elle est visible sur le site et dans l'application mobile.
+    have_account: J'ai déjà un compte
+    who_title: Une présence pour chaque profession
+    pharmacist_title: Pharmaciens
+    pharmacist_desc: Affichez vos horaires, vos gardes et vos coordonnées. Les patients vous trouvent depuis leur position.
+    doctor_title: Médecins
+    doctor_desc: Présentez votre spécialité, votre cabinet et vos horaires dans votre ville.
+    lab_title: Laboratoires
+    lab_desc: Faites connaître vos analyses, votre adresse et vos horaires d'ouverture.
+    add_pharmacy: Ajouter ma pharmacie
+    add_doctor: Ajouter mon cabinet
+    add_lab: Ajouter mon laboratoire
+    benefits_title: Pourquoi rejoindre FinPharma
+    benefit1_title: Visibilité locale
+    benefit1_desc: Votre fiche apparaît sur les recherches par ville et sur la carte.
+    benefit2_title: Site et application
+    benefit2_desc: Une seule inscription pour le site web et l'application mobile.
+    benefit3_title: Fiche gérée par vous
+    benefit3_desc: Vous mettez à jour vos horaires et vos informations depuis votre espace.
+    benefit4_title: Gratuit pour démarrer
+    benefit4_desc: Créer et publier votre fiche ne coûte rien.
+    steps_title: Comment ça marche
+    step1_title: Créez votre compte
+    step1_desc: Quelques informations suffisent pour commencer.
+    step2_title: Renseignez votre établissement
+    step2_desc: Adresse, téléphone, horaires et, si besoin, un justificatif.
+    step3_title: Publication après vérification
+    step3_desc: Notre équipe vérifie la fiche avant de la publier.
+    note: Votre établissement existe déjà sur FinPharma ? Créez votre compte puis demandez à en prendre la gestion.
+    faq_title: Questions fréquentes
+    faq1_q: L'inscription est-elle payante ?
+    faq1_a: Non, la création de fiche est gratuite.
+    faq2_q: Combien de temps avant la publication ?
+    faq2_a: Chaque fiche est vérifiée par notre équipe avant d'être publiée. Vous voyez son statut dans votre espace.
+    faq3_q: Puis-je modifier ma fiche ensuite ?
+    faq3_a: Oui, depuis votre espace propriétaire. Les pharmaciens peuvent déjà modifier leurs horaires.
+    faq4_q: Mon établissement figure déjà sur le site, que faire ?
+    faq4_a: Créez votre compte et contactez-nous pour en revendiquer la gestion.

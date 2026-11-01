@@ -1,0 +1,15 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+<div class="static-page">
+    {% include 'components/breadcrumbs.html.twig' with {items: [{name: 'nav.home'|trans, url: path('v1_home', {_locale: app.request.locale})}, {name: 'footer.contact'|trans, url: null}]} %}
+    <header class="static-page__header"><h1>{{ 'footer.contact'|trans }}</h1></header>
+
+    <form class="static-page__form">
+        <label><span>{{ 'contact.name'|trans }}</span><input type="text" name="name" required></label>
+        <label><span>{{ 'contact.email'|trans }}</span><input type="email" name="email" required></label>
+        <label><span>{{ 'contact.message'|trans }}</span><textarea name="message" rows="5" required></textarea></label>
+        <button type="submit" class="btn btn--primary">{{ 'contact.send'|trans }}</button>
+    </form>
+</div>
+{% endblock %}

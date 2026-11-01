@@ -1,0 +1,11 @@
+twig:
+    default_path: '%kernel.project_dir%/templates'
+    globals:
+        maps_api_key: '%env(GOOGLE_MAPS_API_KEY)%'
+    # §31 : v1/ (pages) + components/ (réutilisables) — arborescence déjà
+    # posée en Phase 4d, résolue directement depuis default_path, pas
+    # besoin de namespaces Twig supplémentaires pour ce seul module web.
+
+when@test:
+    twig:
+        strict_variables: true

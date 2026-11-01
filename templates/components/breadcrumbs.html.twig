@@ -1,0 +1,16 @@
+{# templates/components/breadcrumbs.html.twig
+   Attend: items = [{name, url}, ...] — dernier item sans lien (page courante) #}
+<nav class="breadcrumbs" aria-label="Fil d'Ariane">
+    <ol>
+        {% for item in items %}
+            <li>
+                {% if not loop.last %}
+                    <a href="{{ item.url }}">{{ item.name }}</a>
+                    <span class="breadcrumbs__sep" aria-hidden="true">/</span>
+                {% else %}
+                    <span aria-current="page">{{ item.name }}</span>
+                {% endif %}
+            </li>
+        {% endfor %}
+    </ol>
+</nav>

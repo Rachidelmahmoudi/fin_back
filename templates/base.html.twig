@@ -1,0 +1,26 @@
+{# templates/base.html.twig #}
+<!DOCTYPE html>
+<html lang="{{ app.request.locale }}" dir="{{ app.request.locale == 'ar' ? 'rtl' : 'ltr' }}">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    {% include 'components/seo/head.html.twig' %}
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ asset('css/app.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/theme.css') }}">
+    {% if maps_api_key %}<meta name="fp-maps-key" content="{{ maps_api_key }}">{% endif %}
+    {% block stylesheets %}{% endblock %}
+</head>
+<body>
+    {% include 'components/header.html.twig' %}
+
+    <main>
+        {% block body %}{% endblock %}
+    </main>
+
+    {% include 'components/footer.html.twig' %}
+
+    {% block javascripts %}{% endblock %}
+</body>
+</html>

@@ -1,0 +1,33 @@
+{# templates/components/filters_sidebar.html.twig
+   Patron inspiré de ansonika.com/findoctor (sidebar Type/Sort/Layout).
+   Attend: sortOptions = [{value, label}], activeSort (string), currentQuery (array des query params courants) #}
+<aside class="filters-sidebar">
+    <div class="filters-sidebar__group">
+        <h3>{{ 'listing.sort_by'|trans }}</h3>
+        <ul class="filters-sidebar__options">
+            {% for option in sortOptions %}
+                <li>
+                    <a href="?{{ currentQuery|merge({sort: option.value})|url_encode }}" class="{{ activeSort == option.value ? 'is-active' : '' }}">
+                        {{ option.label }}
+                    </a>
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+
+    {% if specialties is defined and specialties|length > 0 %}
+    <div class="filters-sidebar__group">
+        <h3>{{ 'listing.specialty'|trans }}</h3>
+        <ul class="filters-sidebar__options">
+            <li><a href="?{{ currentQuery|merge({specialty: null})|url_encode }}" class="{{ currentQuery.specialty is not defined ? 'is-active' : '' }}">{{ 'listing.all'|trans }}</a></li>
+            {% for specialty in specialties %}
+                <li>
+                    <a href="?{{ currentQuery|merge({specialty: specialty.slug})|url_encode }}" class="{{ currentQuery.specialty|default(null) == specialty.slug ? 'is-active' : '' }}">
+                        {{ specialty.name }}
+                    </a>
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+    {% endif %}
+</aside>

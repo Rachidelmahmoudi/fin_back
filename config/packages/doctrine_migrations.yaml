@@ -1,0 +1,16 @@
+# FinPharma — config/packages/doctrine_migrations.yaml
+# Fichier manquant depuis le début du projet : normalement généré
+# automatiquement par une "recipe" Symfony Flex à l'installation du bundle
+# doctrine/doctrine-migrations-bundle — mais Flex a été volontairement
+# retiré de composer.json (risque de conflit avec toute la config déjà
+# écrite à la main pour ce projet, voir README backend). Sans ce fichier,
+# DoctrineMigrationsBundle ne sait ni où chercher les migrations, ni quel
+# namespace PHP leur donner — d'où "no registered migrations" malgré des
+# fichiers .php valides sur le disque.
+
+doctrine_migrations:
+    migrations_paths:
+        # Doit correspondre exactement au "namespace DoctrineMigrations;"
+        # utilisé dans chaque fichier migrations/VersionXXXXXXXXXXXXXX.php
+        'DoctrineMigrations': '%kernel.project_dir%/migrations'
+    enable_profiler: false

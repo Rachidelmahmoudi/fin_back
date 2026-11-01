@@ -1,0 +1,236 @@
+nav:
+    home: الرئيسية
+    pharmacies: الصيدليات
+    doctors: الأطباء
+    laboratories: المختبرات
+    medicines: الأدوية
+    blog: المدونة
+    add_establishment: أضف مؤسستك
+    pro: فضاء المهنيين
+    my_space: مساحتي
+
+home:
+    hero_title: ابحث عن صيدلية أو طبيب أو دواء في المغرب
+    hero_subtitle: صيدليات الحراسة، مختبرات التحاليل الطبية وقائمة الأدوية في جميع أنحاء المغرب.
+    search_placeholder: ابحث عن صيدلية، مدينة...
+    search_placeholder_doctor: ابحث عن طبيب، تخصص...
+    search_placeholder_lab: ابحث عن مختبر، مدينة...
+    search_cta: بحث
+    how_title: كيف يعمل الموقع
+    how_subtitle: ثلاث خطوات للعثور على ما تحتاجه، أينما كنت بالمغرب.
+    how_step1_title: ابحث
+    how_step1_desc: حسب المدينة أو الحي أو الموقع الجغرافي — صيدليات، أطباء، مختبرات أو أدوية.
+    how_step2_title: قارن
+    how_step2_desc: المسافة، ساعات العمل، حالة الحراسة، أسعار التحاليل أو الأدوية.
+    how_step3_title: تواصل
+    how_step3_desc: اتصل مباشرة أو احصل على الاتجاهات نحو المؤسسة المختارة.
+    service_pharmacies: جميع الصيدليات
+    service_pharmacies_desc: اعثر على أقرب صيدلية منك.
+    service_duty: صيدليات الحراسة
+    service_duty_desc: مفتوحة على مدار الساعة عند الحاجة.
+    service_labs: مختبرات التحاليل
+    service_labs_desc: قارن الأسعار واعثر على مختبر قريب.
+    service_medicines: الأدوية
+    service_medicines_desc: تحقق من الأسعار والتعويض من طرف الصندوق الوطني للضمان الاجتماعي.
+    browse_title: اعثر على مؤسستك
+    browse_subtitle: تصفح الصيدليات حسب المدينة أو الأطباء حسب التخصص.
+    browse_by_city: حسب المدينة
+    browse_by_specialty: الأطباء حسب التخصص
+    browse_no_data: قريباً في منطقتك.
+    browse_more: عرض المزيد ←
+    app_eyebrow: تطبيق الهاتف
+    app_title: حمّل تطبيق FinPharma
+    app_desc: صيدليات الحراسة بنقرة واحدة، مساعد ذكي، فك تشفير الوصفات وإدارة الصيدلية — مباشرة على هاتفك.
+    app_store: App Store
+    google_play: Google Play
+    cta_establishment_title: هل تدير صيدلية أو عيادة أو مختبراً؟
+    cta_establishment_desc: أضف مؤسستك مجاناً وكن مرئياً لآلاف المرضى.
+
+listing:
+    title_all: صيدليات %city%
+    title_duty: صيدليات الحراسة %city%
+    title_open: صيدليات مفتوحة %city%
+    all_cities: كل المدن
+    title_all_morocco: صيدليات المغرب
+    title_duty_morocco: صيدليات الحراسة بالمغرب
+    title_open_morocco: صيدليات مفتوحة بالمغرب
+    results: نتيجة
+    search_placeholder: البحث بالاسم أو العنوان
+    filters: تصفية
+    empty: لا توجد صيدلية تطابق بحثك.
+    map_requires_js: يرجى تفعيل JavaScript لعرض الخريطة.
+    sort_by: ترتيب حسب
+    sort_closest: الأقرب
+    sort_name: الاسم (أ-ي)
+    specialty: التخصص
+    all: الكل
+    previous: السابق
+    next: التالي
+    page: صفحة
+    view_on_map: عرض على الخريطة
+    map_no_data: الموقع غير متوفر لهذه النتائج.
+    showing: "%count% من أصل %total% نتيجة"
+
+establishment:
+    verified: موثق
+    choose_intro: أضف مؤسستك مجاناً وكن مرئياً لآلاف المرضى.
+    add_pharmacy: أضف صيدليتي
+    add_doctor: أضف عيادتي
+    add_laboratory: أضف مختبري
+    form_intro: سيتم التحقق من المعلومات من قبل فريقنا قبل النشر.
+    name: اسم المؤسسة
+    city: المدينة
+    select_city: اختر مدينتك
+    address: العنوان
+    specialties: التخصصات
+    consultation_price: سعر الاستشارة (درهم)
+    order_number: رقم الانتساب
+    order_number_hint: اختياري — يساعد في التحقق من ملفك الشخصي.
+    accreditation: الاعتماد / الشهادة
+    phone: الهاتف
+    email: البريد الإلكتروني
+    photo: صورة المؤسسة
+    moderation_notice: ستكون مؤسستك مرئية للعموم بعد التحقق من قبل فريقنا (عادة خلال 48 ساعة).
+    submit: إرسال للتحقق
+    photo_hint: سيتم تفعيل رفع الصور قريباً.
+    pharmacy_not_wired: إضافة الصيدليات عبر الموقع قيد الإنجاز حالياً — يرجى التواصل معنا مباشرة في الوقت الراهن.
+    submit_success: تم إرسال طلبك بنجاح. سنقوم بمراجعته قريباً.
+    submit_error: تعذر إرسال الطلب. يرجى المحاولة مرة أخرى.
+
+doctor:
+    consultation_price: سعر الاستشارة
+    about: نبذة
+
+laboratory:
+    tests_available: تحليل متوفر
+    tests_offered: التحاليل المقترحة
+
+medicine:
+    search_placeholder: البحث بالاسم أو بالتركيبة
+    cnss_only: المعوضة من الضمان الاجتماعي فقط
+    cnss_reimbursed: معوض من الضمان الاجتماعي
+    indications: دواعي الاستعمال
+    contraindications: موانع الاستعمال
+    precautions: احتياطات
+    manufacturer: المختبر المصنع
+    therapeutic_class: الصنف العلاجي
+    form: الشكل
+    status: الحالة
+    similar: أدوية مشابهة
+
+service:
+    find_medicine_desc: ابحث عن دواء لدى الصيدليات الشريكة القريبة منك.
+    assistant_desc: خدمة فك تشفير الوصفات الطبية للصيادلة والمساعدين.
+    find_medicine_intro: أدخل اسم الدواء ومدينتك — سنربطك بالصيدليات الشريكة التي تتوفر عليه.
+    medicine_name: الدواء المطلوب
+    your_city: مدينتك
+    upload_prescription: إرفاق وصفة طبية (اختياري)
+    submit_search: البحث لدى الصيدليات الشريكة
+    assistant_intro: خدمة موجهة للصيادلة والمساعدين الذين يحتاجون مساعدة في فك تشفير وصفة مكتوبة بخط اليد.
+    assistant_disclaimer: هذه الخدمة ليست تشخيصاً طبياً. تساعد فقط في تحديد الأدوية الموصوفة في وصفة موجودة.
+    assistant_cta_app: هذه الخدمة متوفرة في تطبيق FinPharma للهاتف.
+    download_app: تحميل التطبيق
+
+blog:
+    coming_soon: مدونة FinPharma قريباً — مقالات عن الصحة والأدوية والصيدلة بالمغرب.
+
+contact:
+    name: الاسم
+    email: البريد الإلكتروني
+    message: الرسالة
+    send: إرسال
+
+auth:
+    login_title: تسجيل الدخول
+    register_title: إنشاء حساب
+    email: البريد الإلكتروني
+    phone: الهاتف
+    password: كلمة المرور
+    login_submit: تسجيل الدخول
+    register_submit: إنشاء حسابي
+    login_error: البريد الإلكتروني أو كلمة المرور غير صحيحة.
+    register_error: تعذر إنشاء الحساب. قد يكون هذا البريد مستخدماً بالفعل.
+    no_account: ليس لديك حساب؟
+    has_account: لديك حساب بالفعل؟
+    create_account: إنشاء حساب
+    logout: تسجيل الخروج
+
+pharmacy:
+    on_duty: صيدلية حارسة
+    open_now: مفتوحة الآن
+    call: اتصال
+    directions: الاتجاهات
+    hours: ساعات العمل
+    map_no_data: الموقع غير متوفر.
+
+days:
+    1: الاثنين
+    2: الثلاثاء
+    3: الأربعاء
+    4: الخميس
+    5: الجمعة
+    6: السبت
+    7: الأحد
+
+detail:
+    favorite: أضف إلى المفضلة
+    share: مشاركة
+    location: الموقع
+    website: الموقع الإلكتروني
+    city: المدينة
+    nearby: صيدليات أخرى في %city%
+    nearby_doctors: أطباء آخرون في %city%
+    nearby_labs: مختبرات أخرى في %city%
+
+footer:
+    tagline: دليل الصحة بالمغرب — صيدليات، أطباء، مختبرات وأدوية.
+    discover: اكتشف
+    services: الخدمات
+    about: حول
+    find_medicine: البحث عن دواء
+    assistant: المساعد الصيدلي
+    pharmacies_duty: صيدليات الحراسة
+    contact: اتصل بنا
+    rights: جميع الحقوق محفوظة.
+
+pro:
+    eyebrow: فضاء مهنيي الصحة
+    title: عرّف بمؤسستك لدى آلاف المرضى
+    lead: صيادلة وأطباء ومختبرات، أنشئوا ملفكم مجاناً على FinPharma. يظهر على الموقع وفي تطبيق الهاتف.
+    have_account: لدي حساب
+    who_title: حضور لكل مهنة
+    pharmacist_title: الصيادلة
+    pharmacist_desc: اعرض أوقات العمل والحراسة وبيانات الاتصال. يجدك المرضى انطلاقاً من موقعهم.
+    doctor_title: الأطباء
+    doctor_desc: قدّم تخصصك وعيادتك وأوقات عملك في مدينتك.
+    lab_title: المختبرات
+    lab_desc: عرّف بتحاليلك وعنوانك وأوقات الفتح.
+    add_pharmacy: أضف صيدليتي
+    add_doctor: أضف عيادتي
+    add_lab: أضف مختبري
+    benefits_title: لماذا تنضم إلى FinPharma
+    benefit1_title: ظهور محلي
+    benefit1_desc: يظهر ملفك في البحث حسب المدينة وعلى الخريطة.
+    benefit2_title: الموقع والتطبيق
+    benefit2_desc: تسجيل واحد للموقع ولتطبيق الهاتف.
+    benefit3_title: ملف تديره بنفسك
+    benefit3_desc: تحدّث أوقات العمل والمعلومات من فضائك.
+    benefit4_title: مجاني للبدء
+    benefit4_desc: إنشاء ونشر ملفك دون أي تكلفة.
+    steps_title: كيف يعمل
+    step1_title: أنشئ حسابك
+    step1_desc: بضع معلومات تكفي للبدء.
+    step2_title: أدخل بيانات مؤسستك
+    step2_desc: العنوان والهاتف وأوقات العمل، ووثيقة إثبات عند الحاجة.
+    step3_title: النشر بعد التحقق
+    step3_desc: يراجع فريقنا الملف قبل نشره.
+    note: مؤسستك موجودة بالفعل على FinPharma؟ أنشئ حسابك ثم اطلب إدارتها.
+    faq_title: أسئلة شائعة
+    faq1_q: هل التسجيل مدفوع؟
+    faq1_a: لا، إنشاء الملف مجاني.
+    faq2_q: كم تستغرق عملية النشر؟
+    faq2_a: يراجع فريقنا كل ملف قبل نشره. تظهر حالته في فضائك.
+    faq3_q: هل يمكنني تعديل ملفي لاحقاً؟
+    faq3_a: نعم، من فضاء المالك. يمكن للصيادلة تعديل أوقات العمل حالياً.
+    faq4_q: مؤسستي موجودة على الموقع، ماذا أفعل؟
+    faq4_a: أنشئ حسابك وتواصل معنا لطلب إدارتها.

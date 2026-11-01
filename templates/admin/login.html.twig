@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="robots" content="noindex, nofollow">
+    <title>Connexion admin — FinPharma</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ asset('css/admin.css') }}">
+</head>
+<body class="admin-login-body">
+    <form class="admin-login-card" method="post" action="{{ path('admin_login') }}">
+        <img src="{{ asset('images/logo-icon.png') }}" alt="FinPharma" width="48" height="48">
+        <h1>Administration FinPharma</h1>
+
+        {% if error %}
+            <p class="admin-login-card__error">Email ou mot de passe incorrect.</p>
+        {% endif %}
+
+        <label>
+            <span>Email</span>
+            <input type="email" name="email" value="{{ lastUsername }}" required autofocus>
+        </label>
+        <label>
+            <span>Mot de passe</span>
+            <input type="password" name="password" required>
+        </label>
+
+        <button type="submit">Se connecter</button>
+    </form>
+</body>
+</html>

@@ -1,0 +1,11 @@
+{# templates/components/pagination.html.twig
+   Attend: currentPage (int), hasMore (bool), currentQuery (array) #}
+<nav class="pagination" aria-label="Pagination">
+    {% if currentPage > 1 %}
+        <a href="?{{ currentQuery|merge({page: currentPage - 1})|url_encode }}" class="pagination__link">{{ 'listing.previous'|trans }}</a>
+    {% endif %}
+    <span class="pagination__current">{{ 'listing.page'|trans }} {{ currentPage }}</span>
+    {% if hasMore %}
+        <a href="?{{ currentQuery|merge({page: currentPage + 1})|url_encode }}" class="pagination__link">{{ 'listing.next'|trans }}</a>
+    {% endif %}
+</nav>

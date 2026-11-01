@@ -1,0 +1,31 @@
+# FinPharma — routes déclarées par attributs PHP #[Route(...)] directement
+# sur les controllers (src/Controller/v1/* et src/Controller/Api/*), pattern
+# Symfony standard depuis PHP 8 attributes — pas de duplication YAML.
+controllers:
+    resource:
+        path: ../src/Controller/
+        namespace: App\Controller
+    type: attribute
+
+# Route de login — MANQUAIT depuis le début : le firewall `api_login`
+# (security.yaml) référence `check_path: api_login`, mais aucune route de ce
+# nom n'existait, donc POST /api/v1/auth/login répondait 404 (le routeur
+# s'exécute AVANT le firewall). Aucun controller nécessaire : le
+# json_login du firewall intercepte la requête. Le NOM doit rester
+# "api_login" : security.yaml (check_path) et RateLimiterSubscriber
+# (limiteur anti brute-force par nom de route) en dépendent.
+api_login:
+    path: /api/v1/auth/login
+    methods: [POST]
+
+# API Platform : ses routes sont importées séparément dans
+# config/routes/api_platform.yaml (avec prefix /api/v1).
+
+
+root_redirect:
+    path: /
+    controller: Symfony\Bundle\FrameworkBundle\Controller\RedirectController
+    defaults:
+        route: v1_home
+        _locale: fr
+        permanent: false

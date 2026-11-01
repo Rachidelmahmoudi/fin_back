@@ -1,0 +1,7 @@
+{% extends 'emails/_layout.html.twig' %}
+{% block content %}
+    <h1 style="font-size:18px;color:#015EAB;margin:0 0 16px;">Bienvenue sur FinPharma 👋</h1>
+    <p>Bonjour,</p>
+    <p>Votre compte <strong>{{ user.email }}</strong> a bien été créé. Vous pouvez dès maintenant rechercher une pharmacie de garde, consulter des médicaments, ou ajouter votre établissement si vous êtes un professionnel de santé.</p>
+    <p>À bientôt sur FinPharma.</p>
+{% endblock %}

@@ -1,0 +1,53 @@
+parameters:
+    # Clé Google Maps (JS). Vide => la carte utilise OpenStreetMap/Leaflet.
+    env(GOOGLE_MAPS_API_KEY): ''
+    # §10 SeoService/StructuredDataService (Phase 4d) : URL de base utilisée
+    # pour générer canonical/hreflang/JSON-LD — jamais codée en dur dans un
+    # service, toujours injectée depuis ici (elle-même depuis .env).
+    app.base_url: '%env(APP_BASE_URL)%'
+
+services:
+    _defaults:
+        autowire: true
+        autoconfigure: true
+
+    App\:
+        resource: '../src/'
+        exclude:
+            - '../src/DependencyInjection/'
+            - '../src/Entity/'
+            - '../src/Kernel.php'
+
+    # §10 : StructuredDataService/SeoService prennent baseUrl en argument
+    # constructeur positionnel (string $baseUrl) — non type-hinté par un
+    # service, donc explicitement lié ici plutôt que laissé à l'autowiring
+    # (qui ne peut pas deviner qu'un simple `string` doit venir de ce paramètre).
+    App\Service\Seo\SeoService:
+        arguments:
+            $baseUrl: '%app.base_url%'
+
+    App\Service\Seo\StructuredDataService:
+        arguments:
+            $baseUrl: '%app.base_url%'
+
+    # §25 : AiProviderInterface -> ExternalAiProvider par défaut (première
+    # étape du plan en 2 temps). Le jour où InternalProspectusProvider
+    # existe, ce seul alias change — aucun autre fichier à toucher (voir
+    # AskIaSessionService, qui ne dépend que de l'interface).
+    App\Service\Ai\AiProviderInterface: '@App\Service\Ai\ExternalAiProvider'
+
+    App\Service\Ai\ExternalAiProvider:
+        arguments:
+            $apiUrl: '%env(AI_PROVIDER_API_URL)%'
+            $apiKey: '%env(AI_PROVIDER_API_KEY)%'
+            $model: '%env(AI_PROVIDER_MODEL)%'
+
+    # Storage : LocalFileStorage par défaut (voir FileStorageInterface pour
+    # le plan de remplacement par un vrai stockage cloud avant mise à
+    # l'échelle multi-instance).
+    App\Service\Storage\FileStorageInterface: '@App\Service\Storage\LocalFileStorage'
+
+    App\Service\Storage\LocalFileStorage:
+        arguments:
+            $uploadsDir: '%kernel.project_dir%/public/uploads'
+            $publicBaseUrl: '%app.base_url%'

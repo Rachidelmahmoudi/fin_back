@@ -1,0 +1,84 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+<div class="listing-page">
+    {# §Correctif : "~" est l'opérateur de CONCATÉNATION DE CHAÎNES en Twig,
+       pas une fusion de tableaux — l'utiliser entre deux tableaux les
+       convertit en texte (d'où l'avertissement "Array to string
+       conversion") au lieu de les combiner. Il fallait le filtre |merge. #}
+    {% include 'components/breadcrumbs.html.twig' with {
+        items: [
+            {name: 'nav.home'|trans, url: path('v1_home', {_locale: app.request.locale})},
+            {name: onDuty ? 'footer.pharmacies_duty'|trans : (open ? 'pharmacy.open_now'|trans : 'nav.pharmacies'|trans), url: null},
+        ]|merge(city ? [{name: city.name, url: null}] : [])
+    } %}
+
+    <header class="listing-page__header">
+        <h1>
+            {% if onDuty %}{{ city ? 'listing.title_duty'|trans({'%city%': city.name}) : 'listing.title_duty_morocco'|trans }}
+            {% elseif open %}{{ city ? 'listing.title_open'|trans({'%city%': city.name}) : 'listing.title_open_morocco'|trans }}
+            {% else %}{{ city ? 'listing.title_all'|trans({'%city%': city.name}) : 'listing.title_all_morocco'|trans }}
+            {% endif %}
+        </h1>
+        <p class="listing-page__count">{{ 'listing.showing'|trans({'%count%': pharmacies|length, '%total%': totalCount}) }}</p>
+    </header>
+
+    <form class="listing-page__filters" method="get">
+        <div class="search-bar">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="2"/><path d="M21 21l-4.3-4.3" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+            <input type="text" name="q" placeholder="{{ 'listing.search_placeholder'|trans }}" value="{{ app.request.query.get('q') }}">
+        </div>
+        <button type="submit" class="btn btn--outline">{{ 'listing.filters'|trans }}</button>
+    </form>
+
+    <div class="listing-page__layout">
+        {% include 'components/filters_sidebar.html.twig' with {
+            sortOptions: [
+                {value: 'distance', label: 'listing.sort_closest'|trans},
+                {value: 'name', label: 'listing.sort_name'|trans},
+            ],
+            activeSort: app.request.query.get('sort', 'distance'),
+            currentQuery: app.request.query.all,
+        } %}
+
+        <div class="listing-page__split">
+            <div class="listing-page__list">
+                {% for pharmacy in pharmacies %}
+                    {% include 'components/card_pharmacy.html.twig' with {pharmacy: pharmacy, distance: distances[pharmacy.id]|default(null)} %}
+                {% else %}
+                    <p class="listing-page__empty">{{ 'listing.empty'|trans }}</p>
+                {% endfor %}
+
+                {% include 'components/pagination.html.twig' with {
+                    currentPage: app.request.query.getInt('page', 1),
+                    hasMore: pharmacies|length >= 20,
+                    currentQuery: app.request.query.all,
+                } %}
+            </div>
+
+            <div
+                class="listing-page__map"
+                id="pharmacy-map"
+                data-map="list"
+                data-empty-label="{{ 'listing.map_no_data'|trans }}"
+                data-pharmacies='{{ pharmacies|map(p => {
+                    id: p.id,
+                    name: p.name,
+                    address: p.addressRaw ~ ", " ~ p.city.name,
+                    phone: p.phone, photo: p.photo,
+                    lat: p.lat,
+                    lng: p.lng,
+                    onDuty: p.onDutyNow,
+                    url: path("v1_pharmacy_show", {_locale: app.request.locale, slug: p.slug ~ "-" ~ p.uid}),
+                })|json_encode }}'
+            >
+                <noscript>{{ 'listing.map_requires_js'|trans }}</noscript>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block javascripts %}
+<script defer src="{{ asset('js/map.js') }}"></script>
+{% endblock %}

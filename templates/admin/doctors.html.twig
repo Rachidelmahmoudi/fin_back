@@ -1,0 +1,37 @@
+{% extends 'admin/base.html.twig' %}
+{% block title %}Médecins en attente{% endblock %}
+
+{% block body %}
+<h1 class="admin-page-title">Médecins en attente ({{ doctors|length }})</h1>
+
+<div class="admin-table-wrapper">
+    <table class="admin-table">
+        <thead>
+            <tr><th>Nom</th><th>Ville</th><th>Spécialités</th><th>Propriétaire</th><th>Soumis le</th><th></th></tr>
+        </thead>
+        <tbody>
+            {% for doctor in doctors %}
+                <tr>
+                    <td>{{ doctor.name }}</td>
+                    <td>{{ doctor.city.name }}</td>
+                    <td>{{ doctor.specialties|map(s => s.name)|join(', ')|default('—') }}</td>
+                    <td>{{ doctor.owner ? doctor.owner.email : '—' }}</td>
+                    <td>{{ doctor.createdAt|date('d/m/Y H:i') }}</td>
+                    <td class="admin-table__actions">
+                        <form method="post" action="{{ path('admin_establishment_approve', {type: 'doctors', id: doctor.id}) }}">
+                            <label class="admin-checkbox-inline"><input type="checkbox" name="markVerified" value="1"> Vérifié</label>
+                            <button type="submit" class="admin-btn admin-btn--approve">Approuver</button>
+                        </form>
+                        <form method="post" action="{{ path('admin_establishment_reject', {type: 'doctors', id: doctor.id}) }}" class="admin-reject-form">
+                            <input type="text" name="reason" placeholder="Motif du rejet" required>
+                            <button type="submit" class="admin-btn admin-btn--reject">Rejeter</button>
+                        </form>
+                    </td>
+                </tr>
+            {% else %}
+                <tr><td colspan="6" class="admin-empty-state">Aucun médecin en attente.</td></tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

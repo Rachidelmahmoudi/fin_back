@@ -1,0 +1,20 @@
+nelmio_cors:
+    defaults:
+        origin_regex: true
+        # §18 : CORS restreint — l'app mobile Ionic/Capacitor n'envoie pas
+        # d'Origin classique (capacitor://localhost ou ionic://localhost
+        # selon plateforme), le site web tourne sur le domaine FinPharma.
+        # Remplacer par les vrais domaines de prod avant mise en ligne —
+        # ce fichier utilise des valeurs d'environnement pour rester
+        # configurable sans redéploiement de code.
+        allow_origin: ['%env(CORS_ALLOW_ORIGIN)%']
+        allow_methods: ['GET', 'OPTIONS', 'POST', 'PATCH', 'PUT', 'DELETE']
+        allow_headers: ['Content-Type', 'Authorization']
+        expose_headers: ['Retry-After']
+        max_age: 3600
+    paths:
+        '^/api/':
+            allow_origin: ['%env(CORS_ALLOW_ORIGIN)%']
+            allow_headers: ['Content-Type', 'Authorization']
+            allow_methods: ['GET', 'OPTIONS', 'POST', 'PATCH', 'PUT', 'DELETE']
+            max_age: 3600

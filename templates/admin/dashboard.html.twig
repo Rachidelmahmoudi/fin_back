@@ -1,0 +1,29 @@
+{% extends 'admin/base.html.twig' %}
+{% block title %}Tableau de bord{% endblock %}
+
+{% block body %}
+<h1 class="admin-page-title">Tableau de bord</h1>
+
+<div class="admin-stats-grid">
+    <a href="{{ path('admin_pharmacies_pending') }}" class="admin-stat-card">
+        <span class="admin-stat-card__value">{{ pendingCounts.pharmacies }}</span>
+        <span class="admin-stat-card__label">Pharmacies en attente</span>
+    </a>
+    <a href="{{ path('admin_establishment_pending', {type: 'doctors'}) }}" class="admin-stat-card">
+        <span class="admin-stat-card__value">{{ pendingCounts.doctors }}</span>
+        <span class="admin-stat-card__label">Médecins en attente</span>
+    </a>
+    <a href="{{ path('admin_establishment_pending', {type: 'laboratories'}) }}" class="admin-stat-card">
+        <span class="admin-stat-card__value">{{ pendingCounts.laboratories }}</span>
+        <span class="admin-stat-card__label">Laboratoires en attente</span>
+    </a>
+    <a href="{{ path('admin_wallet_recharges') }}" class="admin-stat-card">
+        <span class="admin-stat-card__value">{{ pendingCounts.recharges }}</span>
+        <span class="admin-stat-card__label">Recharges à valider</span>
+    </a>
+</div>
+
+{% if totalPending == 0 %}
+    <p class="admin-empty-state">Tout est à jour — aucune action en attente.</p>
+{% endif %}
+{% endblock %}

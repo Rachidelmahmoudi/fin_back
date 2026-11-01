@@ -1,0 +1,12 @@
+{% extends 'emails/_layout.html.twig' %}
+{% block content %}
+    <h1 style="font-size:18px;color:#015EAB;margin:0 0 16px;">Votre établissement est publié ✅</h1>
+    <p>Bonjour,</p>
+    <p>Bonne nouvelle : votre {{ establishmentTypeLabel }} <strong>{{ establishmentName }}</strong> a été vérifié et approuvé par l'équipe FinPharma. Il est désormais visible publiquement.</p>
+    {# La gestion (horaires, informations) n'existe aujourd'hui que pour les pharmacies : on ne promet pas autre chose aux médecins et laboratoires. #}
+    {% if establishmentType == 'pharmacy' %}
+        <p>Pour mettre à jour vos horaires et vos informations, connectez-vous à l'application FinPharma avec ce même compte (<strong>{{ user.email }}</strong>), rubrique « Ma pharmacie ». Si vous êtes déjà connecté, déconnectez-vous puis reconnectez-vous pour voir apparaître la rubrique.</p>
+    {% else %}
+        <p>Merci de votre confiance.</p>
+    {% endif %}
+{% endblock %}

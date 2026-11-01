@@ -1,0 +1,33 @@
+api_platform:
+    title: FinPharma API
+    description: API publique et applicative de FinPharma (pharmacies, médecins, laboratoires, médicaments, wallet, déchiffrement d'ordonnance)
+    version: '1.0.0'
+
+    # §17 : toutes les ApiResource (src/ApiResource/*) sont préfixées
+    # /api/v1 pour matcher les routes custom des controllers (mêmes
+    # endpoints attendus côté web Phase 4f et mobile) — pas /api tout court.
+    defaults:
+        stateless: true
+        cache_headers:
+            vary: ['Content-Type', 'Authorization', 'Origin']
+
+    formats:
+        json: ['application/json']
+        jsonld: ['application/ld+json']
+
+    docs_formats:
+        jsonopenapi: ['application/vnd.openapi+json']
+        html: ['text/html']
+
+    # DTO-first (Phase 3 §3.2) : les ApiResource vivent dans src/ApiResource/,
+    # pas mappées directement sur les entités Doctrine dans src/Entity/.
+    resource_class_directories:
+        - '%kernel.project_dir%/src/ApiResource'
+
+    # §18 : pas de pagination Hydra complexe pour l'app mobile/web — items
+    # simples, la pagination se fait via ?page= consommé par nos providers
+    # custom (PharmacyCollectionProvider, etc.), pas par le comportement
+    # Hydra par défaut d'API Platform.
+    enable_swagger: true
+    enable_swagger_ui: '%kernel.debug%'
+    enable_re_doc: '%kernel.debug%'

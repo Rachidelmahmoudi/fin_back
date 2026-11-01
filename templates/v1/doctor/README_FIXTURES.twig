@@ -1,0 +1,87 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+<div class="listing-page">
+    {# §Correctif : "~" -> "|merge" (voir pharmacy/list.html.twig pour le détail complet) #}
+    {% include 'components/breadcrumbs.html.twig' with {
+        items: [
+            {name: 'nav.home'|trans, url: path('v1_home', {_locale: app.request.locale})},
+            {name: specialty ? specialty.name : 'nav.doctors'|trans, url: null},
+        ]|merge(city ? [{name: city.name, url: null}] : [])
+    } %}
+
+    <header class="listing-page__header">
+        <h1>{{ specialty ? specialty.name : 'nav.doctors'|trans }}{{ city ? ' à ' ~ city.name : '' }}</h1>
+        <p class="listing-page__count">{{ doctors|length }} {{ 'listing.results'|trans }}</p>
+    </header>
+
+    <form class="listing-page__filters" method="get">
+        <div class="search-bar">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="2"/><path d="M21 21l-4.3-4.3" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+            <input type="text" name="q" placeholder="{{ 'listing.search_placeholder'|trans }}" value="{{ app.request.query.get('q') }}">
+        </div>
+        <button type="submit" class="btn btn--outline">{{ 'listing.filters'|trans }}</button>
+    </form>
+
+    <div class="listing-page__layout">
+        {# §Correctif : la spécialité ne passe PAS par filters_sidebar.html.twig
+           (qui génère des "?specialty=..." en paramètre de requête) — les
+           routes médecins utilisent la spécialité comme SEGMENT DE CHEMIN
+           (/medecins/specialite/{specialty}), jamais un paramètre de
+           requête. Liens construits ici avec de vraies routes (path()),
+           en tenant compte de la ville active le cas échéant. Le tri
+           continue de passer par le composant partagé, lui fonctionne
+           correctement en paramètre de requête. #}
+        <aside class="filters-sidebar">
+            <div class="filters-sidebar__group">
+                <h3>{{ 'listing.sort_by'|trans }}</h3>
+                <ul class="filters-sidebar__options">
+                    <li><a href="?{{ app.request.query.all|merge({sort: 'name'})|url_encode }}" class="is-active">{{ 'listing.sort_name'|trans }}</a></li>
+                </ul>
+            </div>
+
+            {% if specialties is defined and specialties|length > 0 %}
+            <div class="filters-sidebar__group">
+                <h3>{{ 'listing.specialty'|trans }}</h3>
+                <ul class="filters-sidebar__options">
+                    <li>
+                        <a href="{{ city ? path('v1_doctor_list_by_city', {_locale: app.request.locale, city: city.slug}) : path('v1_doctor_list', {_locale: app.request.locale}) }}" class="{{ specialty is null ? 'is-active' : '' }}">
+                            {{ 'listing.all'|trans }}
+                        </a>
+                    </li>
+                    {% for s in specialties %}
+                        <li>
+                            <a href="{{ city ? path('v1_doctor_list_by_specialty_city', {_locale: app.request.locale, specialty: s.slug, city: city.slug}) : path('v1_doctor_list_by_specialty', {_locale: app.request.locale, specialty: s.slug}) }}" class="{{ specialty and specialty.slug == s.slug ? 'is-active' : '' }}">
+                                {{ s.name }}
+                            </a>
+                        </li>
+                    {% endfor %}
+                </ul>
+            </div>
+            {% endif %}
+        </aside>
+
+        <div class="listing-page__split">
+            <div class="listing-page__list">
+                {% for doctor in doctors %}
+                    {% include 'components/card_doctor.html.twig' with {doctor: doctor} %}
+                {% else %}
+                    <p class="listing-page__empty">{{ 'listing.empty'|trans }}</p>
+                {% endfor %}
+            </div>
+
+            <div
+                class="listing-page__map" id="doctor-map" data-map="list"
+                data-empty-label="{{ 'listing.map_no_data'|trans }}"
+                data-pharmacies='{{ doctors|map(d => {
+                    id: d.id, name: d.name, address: d.addressRaw ~ ", " ~ d.city.name,
+                    lat: d.lat, lng: d.lng,
+                    url: path("v1_doctor_show", {_locale: app.request.locale, slug: d.slug ~ "-" ~ d.uid}),
+                })|json_encode }}'
+            ></div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block javascripts %}<script defer src="{{ asset('js/map.js') }}"></script>{% endblock %}

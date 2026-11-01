@@ -1,0 +1,68 @@
+{% extends 'admin/base.html.twig' %}
+{% block title %}Historique des déchiffrements{% endblock %}
+
+{% block body %}
+<h1 class="admin-page-title">Historique des déchiffrements ({{ totalCount }})</h1>
+<p class="admin-page-subtitle">
+    Lecture seule — aucune action de modération ici. Utile en cas de litige signalé par un pharmacien sur un déchiffrement déjà terminé.
+</p>
+
+<div class="admin-table-wrapper">
+    <table class="admin-table">
+        <thead>
+            <tr>
+                <th>Date</th>
+                <th>Statut</th>
+                <th>Demandeur (pharmacien)</th>
+                <th>Ordonnance</th>
+                <th>Déchiffreur</th>
+                <th>Résultat</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for row in rows %}
+                {% set r = row.request %}
+                {% set res = row.result %}
+                <tr>
+                    <td>{{ r.createdAt|date('d/m/Y H:i') }}</td>
+                    <td>
+                        <span class="admin-status-badge admin-status-badge--{{ r.status.value|lower }}">
+                            {{ {
+                                'DRAFT': 'Brouillon', 'PUBLISHED': 'Publiée', 'ACCEPTED': 'Acceptée',
+                                'IN_PROGRESS': 'En cours', 'COMPLETED': 'Terminée', 'EXPIRED': 'Expirée', 'CANCELLED': 'Annulée'
+                            }[r.status.value] ?? r.status.value }}
+                        </span>
+                    </td>
+                    <td>{{ r.pharmacist.email }}</td>
+                    <td><a href="{{ r.imageUrl }}" target="_blank" rel="noopener">Voir l'image</a></td>
+                    <td>{{ r.decoder ? r.decoder.email : '—' }}</td>
+                    <td>
+                        {% if res %}
+                            <details>
+                                <summary>{{ res.items|length }} médicament(s) — soumis le {{ res.submittedAt|date('d/m/Y H:i') }}</summary>
+                                <ul class="admin-result-list">
+                                    {% for item in res.items %}
+                                        <li>{{ item.medicineName }}{{ item.quantity ? ' × ' ~ item.quantity : '' }}</li>
+                                    {% endfor %}
+                                </ul>
+                            </details>
+                        {% else %}
+                            <span class="admin-muted">Pas encore de résultat</span>
+                        {% endif %}
+                    </td>
+                </tr>
+            {% else %}
+                <tr><td colspan="6" class="admin-empty-state">Aucun déchiffrement pour l'instant.</td></tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+{% if totalPages > 1 %}
+    <div class="admin-pagination">
+        {% if page > 1 %}<a href="?page={{ page - 1 }}">← Précédent</a>{% endif %}
+        <span>Page {{ page }} / {{ totalPages }}</span>
+        {% if page < totalPages %}<a href="?page={{ page + 1 }}">Suivant →</a>{% endif %}
+    </div>
+{% endif %}
+{% endblock %}

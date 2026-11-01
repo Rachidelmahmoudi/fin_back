@@ -1,0 +1,101 @@
+# FinPharma — config/packages/security.yaml
+# §17-18 du cahier des charges : API stateless JWT pour l'app mobile,
+# aucune session, aucune confiance dans un Bundle ID/identifiant d'app.
+#
+# Dépendance : composer require lexik/jwt-authentication-bundle
+# Puis générer la paire de clés RS256 (voir README_PHASE4B.md §Mise en route).
+
+security:
+    password_hashers:
+        App\Entity\User: 'auto' # bcrypt/argon2i selon dispo serveur, jamais MD5/SHA1
+
+    providers:
+        app_user_provider:
+            entity:
+                class: App\Entity\User
+                property: email
+
+    firewalls:
+        # Endpoints publics d'auth : pas de token requis pour s'y connecter.
+        api_auth_public:
+            pattern: ^/api/v1/auth/(register|refresh)$
+            stateless: true
+            security: false
+
+        # Login JSON standard Lexik : POST /api/v1/auth/login {email, password}
+        # -> émet un access token JWT. Le refresh token est émis séparément
+        # par AuthController::register / le endpoint /login_check custom
+        # (voir README_PHASE4B.md pour le listener qui appelle AuthService
+        # après un login Lexik réussi).
+        api_login:
+            pattern: ^/api/v1/auth/login$
+            stateless: true
+            json_login:
+                check_path: api_login
+                username_path: email
+                password_path: password
+                success_handler: App\Security\LoginSuccessHandler
+                failure_handler: lexik_jwt_authentication.handler.authentication_failure
+
+        # Tout le reste de l'API : JWT obligatoire, aucune session.
+        api:
+            pattern: ^/api
+            stateless: true
+            jwt: ~
+
+        # Back-office admin (§Addendum : "petit backend admin" pour la
+        # modération et les recharges wallet manuelles). Auth par session
+        # classique Symfony (form_login) — PAS le JWT de l'API : c'est du
+        # personnel interne qui navigue au clavier/souris dans un
+        # navigateur, pas un client API. Firewall séparé du site public
+        # (`main`, ci-dessous) pour isoler complètement leurs règles d'accès.
+        admin:
+            pattern: ^/admin
+            provider: app_user_provider
+            form_login:
+                login_path: admin_login
+                check_path: admin_login
+                default_target_path: admin_dashboard
+                username_parameter: email
+                password_parameter: password
+            logout:
+                path: admin_logout
+                target: admin_login
+
+        # Site web public (Twig) : reste classique, hors périmètre Phase 4b
+        # (pas de JWT côté web, cookies de session standards si besoin d'un
+        # espace pharmacien connecté sur le site — à traiter en Phase 4c).
+        main:
+            lazy: true
+            provider: app_user_provider
+
+    access_control:
+        - { path: ^/api/v1/(docs|contexts|errors|validation_errors|\.well-known), roles: PUBLIC_ACCESS }
+        - { path: ^/api/v1/auth, roles: PUBLIC_ACCESS }
+        - { path: ^/api/v1/medicines, roles: PUBLIC_ACCESS, methods: [GET] }
+        - { path: ^/api/v1/cities, roles: PUBLIC_ACCESS, methods: [GET] }
+        - { path: ^/api/v1/specialties, roles: PUBLIC_ACCESS, methods: [GET] }
+        - { path: ^/api/v1/pharmacies, roles: PUBLIC_ACCESS, methods: [GET] }
+        - { path: '^/api/v1/pharmacies/[^/]+$', roles: ROLE_PHARMACIST, methods: [PATCH] }
+        - { path: '^/api/v1/pharmacies/[^/]+/opening-hours', roles: ROLE_PHARMACIST }
+        - { path: ^/api/v1/me, roles: ROLE_USER }
+        - { path: ^/api/v1/doctors, roles: PUBLIC_ACCESS, methods: [GET] }
+        - { path: ^/api/v1/laboratories, roles: PUBLIC_ACCESS, methods: [GET] }
+        - { path: ^/api/v1/establishments, roles: ROLE_USER }
+        - { path: ^/api/v1/admin, roles: ROLE_ADMIN }
+        - { path: ^/api/v1/prescriptions, roles: ROLE_USER }
+        - { path: ^/api/v1/ask-ia, roles: ROLE_USER }
+        - { path: ^/api/v1/wallet, roles: ROLE_USER }
+        - { path: ^/api/v1/uploads, roles: ROLE_USER }
+        - { path: ^/api/v1/decoder, roles: ROLE_DECODER }
+        - { path: ^/api, roles: ROLE_USER }
+        - { path: ^/admin/login, roles: PUBLIC_ACCESS }
+        - { path: ^/admin, roles: ROLE_ADMIN }
+
+    role_hierarchy:
+        # Un pharmacien/déchiffreur/admin reste aussi un utilisateur standard.
+        ROLE_PHARMACIST: ROLE_USER
+        ROLE_DECODER: ROLE_USER
+        ROLE_DOCTOR: ROLE_USER
+        ROLE_LAB_OWNER: ROLE_USER
+        ROLE_ADMIN: [ROLE_PHARMACIST, ROLE_DECODER, ROLE_DOCTOR, ROLE_LAB_OWNER]

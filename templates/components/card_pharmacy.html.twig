@@ -1,0 +1,43 @@
+{# templates/components/card_pharmacy.html.twig
+   Attend: pharmacy (entité), distance (float|null)
+   Patron d'actions rapides inspiré de ansonika.com/findoctor (View on Map / Directions). #}
+<article class="pharmacy-card" data-pharmacy-card="{{ pharmacy.id }}">
+    <div class="pharmacy-card__thumb">
+        {% if pharmacy.photo %}
+            <img src="{{ pharmacy.photo }}" alt="{{ pharmacy.name }}" loading="lazy">
+        {% else %}
+            <div class="pharmacy-card__thumb-placeholder" aria-hidden="true">
+                <svg width="28" height="28" viewBox="0 0 24 24" fill="none"><path d="M12 2L2 7v10l10 5 10-5V7L12 2z" stroke="currentColor" stroke-width="1.5"/></svg>
+            </div>
+        {% endif %}
+        {% if pharmacy.onDutyNow %}
+            <span class="badge badge--duty">{{ 'pharmacy.on_duty'|trans }}</span>
+        {% elseif pharmacy.openNow %}
+            <span class="badge badge--open">{{ 'pharmacy.open_now'|trans }}</span>
+        {% endif %}
+    </div>
+
+    <div class="pharmacy-card__body">
+        <h3><a href="{{ path('v1_pharmacy_show', {_locale: app.request.locale, slug: pharmacy.slug ~ '-' ~ pharmacy.uid}) }}">{{ pharmacy.name }}</a></h3>
+        <p class="pharmacy-card__address">{{ pharmacy.addressRaw }}, {{ pharmacy.city.name }}</p>
+
+        <div class="pharmacy-card__meta">
+            {% if pharmacy.phone %}
+                <a href="tel:{{ pharmacy.phone }}" class="pharmacy-card__phone">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M22 16.9v3a2 2 0 01-2.2 2 19.8 19.8 0 01-8.6-3.1 19.5 19.5 0 01-6-6A19.8 19.8 0 012.1 4.2 2 2 0 014.1 2h3a2 2 0 012 1.7c.1.9.3 1.8.6 2.7a2 2 0 01-.4 2.1L8.1 9.6a16 16 0 006.3 6.3l1.1-1.2a2 2 0 012.1-.4c.9.3 1.8.5 2.7.6a2 2 0 011.7 2.1z" stroke="currentColor" stroke-width="1.5"/></svg>
+                    {{ pharmacy.phone }}
+                </a>
+            {% endif %}
+            {% if distance is not null %}
+                <span class="pharmacy-card__distance">{{ distance }} km</span>
+            {% endif %}
+        </div>
+
+        <div class="pharmacy-card__actions">
+            <a href="#pharmacy-map" data-view-on-map>{{ 'listing.view_on_map'|trans }}</a>
+            {% if pharmacy.lat and pharmacy.lng %}
+                <a href="https://www.google.com/maps/dir/?api=1&destination={{ pharmacy.lat }},{{ pharmacy.lng }}" target="_blank" rel="noopener">{{ 'pharmacy.directions'|trans }}</a>
+            {% endif %}
+        </div>
+    </div>
+</article>

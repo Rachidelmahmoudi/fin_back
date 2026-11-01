@@ -1,0 +1,21 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+<div class="static-page">
+    {% include 'components/breadcrumbs.html.twig' with {items: [
+        {name: 'nav.home'|trans, url: path('v1_home', {_locale: app.request.locale})},
+        {name: 'footer.services'|trans, url: path('v1_service_index', {_locale: app.request.locale})},
+        {name: 'footer.assistant'|trans, url: null},
+    ]} %}
+
+    <header class="static-page__header">
+        <h1>{{ 'footer.assistant'|trans }}</h1>
+        <p>{{ 'service.assistant_intro'|trans }}</p>
+    </header>
+
+    <div class="static-page__notice">{{ 'service.assistant_disclaimer'|trans }}</div>
+
+    <p>{{ 'service.assistant_cta_app'|trans }}</p>
+    <a href="#" class="btn btn--primary">{{ 'service.download_app'|trans }}</a>
+</div>
+{% endblock %}

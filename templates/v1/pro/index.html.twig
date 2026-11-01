@@ -1,0 +1,82 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+<section class="pro-hero">
+    <div class="pro-hero__inner">
+        <p class="pro-hero__eyebrow">{{ 'pro.eyebrow'|trans }}</p>
+        <h1>{{ 'pro.title'|trans }}</h1>
+        <p class="pro-hero__lead">{{ 'pro.lead'|trans }}</p>
+        <div class="pro-hero__cta">
+            <a href="{{ path('v1_establishment_choose', {_locale: app.request.locale}) }}" class="btn btn--white">{{ 'nav.add_establishment'|trans }}</a>
+            <a href="{{ path('v1_login', {_locale: app.request.locale}) }}" class="btn btn--ghost">{{ 'pro.have_account'|trans }}</a>
+        </div>
+    </div>
+</section>
+
+<section class="pro-section">
+    <h2>{{ 'pro.who_title'|trans }}</h2>
+    <div class="pro-grid pro-grid--3">
+        <a class="pro-card" href="{{ path('v1_establishment_create_pharmacy', {_locale: app.request.locale}) }}">
+            <span class="pro-card__icon"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 2L2 7v10l10 5 10-5V7L12 2z"/><path d="M12 8v8M8 12h8"/></svg></span>
+            <h3>{{ 'pro.pharmacist_title'|trans }}</h3>
+            <p>{{ 'pro.pharmacist_desc'|trans }}</p>
+            <span class="pro-card__more">{{ 'pro.add_pharmacy'|trans }} &rarr;</span>
+        </a>
+        <a class="pro-card" href="{{ path('v1_establishment_create_doctor', {_locale: app.request.locale}) }}">
+            <span class="pro-card__icon"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.5-7 8-7s8 3 8 7"/></svg></span>
+            <h3>{{ 'pro.doctor_title'|trans }}</h3>
+            <p>{{ 'pro.doctor_desc'|trans }}</p>
+            <span class="pro-card__more">{{ 'pro.add_doctor'|trans }} &rarr;</span>
+        </a>
+        <a class="pro-card" href="{{ path('v1_establishment_create_laboratory', {_locale: app.request.locale}) }}">
+            <span class="pro-card__icon"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M9 3h6M10 3v5l-5 9a2 2 0 001.7 3h10.6a2 2 0 001.7-3l-5-9V3"/></svg></span>
+            <h3>{{ 'pro.lab_title'|trans }}</h3>
+            <p>{{ 'pro.lab_desc'|trans }}</p>
+            <span class="pro-card__more">{{ 'pro.add_lab'|trans }} &rarr;</span>
+        </a>
+    </div>
+</section>
+
+<section class="pro-section pro-section--tint">
+    <h2>{{ 'pro.benefits_title'|trans }}</h2>
+    <div class="pro-grid pro-grid--4">
+        {% for n in 1..4 %}
+        <div class="pro-benefit">
+            <span class="pro-benefit__num">{{ n }}</span>
+            <h3>{{ ('pro.benefit' ~ n ~ '_title')|trans }}</h3>
+            <p>{{ ('pro.benefit' ~ n ~ '_desc')|trans }}</p>
+        </div>
+        {% endfor %}
+    </div>
+</section>
+
+<section class="pro-section">
+    <h2>{{ 'pro.steps_title'|trans }}</h2>
+    <ol class="pro-steps">
+        {% for n in 1..3 %}
+        <li><strong>{{ ('pro.step' ~ n ~ '_title')|trans }}</strong><span>{{ ('pro.step' ~ n ~ '_desc')|trans }}</span></li>
+        {% endfor %}
+    </ol>
+    <p class="pro-note">{{ 'pro.note'|trans }}</p>
+</section>
+
+<section class="pro-section pro-faq">
+    <h2>{{ 'pro.faq_title'|trans }}</h2>
+    {% for n in 1..4 %}
+    <details>
+        <summary>{{ ('pro.faq' ~ n ~ '_q')|trans }}</summary>
+        <p>{{ ('pro.faq' ~ n ~ '_a')|trans }}</p>
+    </details>
+    {% endfor %}
+</section>
+
+<section class="cta-establishment">
+    <div class="cta-establishment__inner">
+        <div>
+            <h2>{{ 'home.cta_establishment_title'|trans }}</h2>
+            <p>{{ 'home.cta_establishment_desc'|trans }}</p>
+        </div>
+        <a href="{{ path('v1_establishment_choose', {_locale: app.request.locale}) }}" class="btn btn--primary">{{ 'nav.add_establishment'|trans }}</a>
+    </div>
+</section>
+{% endblock %}

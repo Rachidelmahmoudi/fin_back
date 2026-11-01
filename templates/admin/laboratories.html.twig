@@ -1,0 +1,36 @@
+{% extends 'admin/base.html.twig' %}
+{% block title %}Laboratoires en attente{% endblock %}
+
+{% block body %}
+<h1 class="admin-page-title">Laboratoires en attente ({{ laboratories|length }})</h1>
+
+<div class="admin-table-wrapper">
+    <table class="admin-table">
+        <thead>
+            <tr><th>Nom</th><th>Ville</th><th>Propriétaire</th><th>Soumis le</th><th></th></tr>
+        </thead>
+        <tbody>
+            {% for laboratory in laboratories %}
+                <tr>
+                    <td>{{ laboratory.name }}</td>
+                    <td>{{ laboratory.city.name }}</td>
+                    <td>{{ laboratory.owner ? laboratory.owner.email : '—' }}</td>
+                    <td>{{ laboratory.createdAt|date('d/m/Y H:i') }}</td>
+                    <td class="admin-table__actions">
+                        <form method="post" action="{{ path('admin_establishment_approve', {type: 'laboratories', id: laboratory.id}) }}">
+                            <label class="admin-checkbox-inline"><input type="checkbox" name="markVerified" value="1"> Vérifié</label>
+                            <button type="submit" class="admin-btn admin-btn--approve">Approuver</button>
+                        </form>
+                        <form method="post" action="{{ path('admin_establishment_reject', {type: 'laboratories', id: laboratory.id}) }}" class="admin-reject-form">
+                            <input type="text" name="reason" placeholder="Motif du rejet" required>
+                            <button type="submit" class="admin-btn admin-btn--reject">Rejeter</button>
+                        </form>
+                    </td>
+                </tr>
+            {% else %}
+                <tr><td colspan="5" class="admin-empty-state">Aucun laboratoire en attente.</td></tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

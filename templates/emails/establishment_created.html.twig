@@ -1,0 +1,7 @@
+{% extends 'emails/_layout.html.twig' %}
+{% block content %}
+    <h1 style="font-size:18px;color:#015EAB;margin:0 0 16px;">Établissement reçu ✅</h1>
+    <p>Bonjour,</p>
+    <p>Votre {{ establishmentTypeLabel }} <strong>{{ establishmentName }}</strong> a bien été soumis(e) à FinPharma.</p>
+    <p>Notre équipe va vérifier les informations avant publication. Vous recevrez une notification dès que votre établissement sera visible publiquement.</p>
+{% endblock %}

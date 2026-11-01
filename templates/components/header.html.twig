@@ -1,0 +1,38 @@
+{# templates/components/header.html.twig
+   §4 du cahier des charges : menu principal + CTA "Ajouter mon établissement". #}
+<header class="site-header">
+    <div class="site-header__inner">
+        <a href="{{ path('v1_home', {_locale: app.request.locale}) }}" class="site-header__logo">
+            <img src="{{ asset('images/logo-icon.png') }}" alt="FinPharma" width="34" height="34">
+            <span>Fin<strong>Pharma</strong></span>
+        </a>
+
+        <nav class="site-header__nav" aria-label="Navigation principale">
+            <a href="{{ path('v1_home', {_locale: app.request.locale}) }}">{{ 'nav.home'|trans }}</a>
+            <a href="{{ path('v1_pharmacy_list', {_locale: app.request.locale, city: null}) }}">{{ 'nav.pharmacies'|trans }}</a>
+            <a href="{{ path('v1_doctor_list', {_locale: app.request.locale}) }}">{{ 'nav.doctors'|trans }}</a>
+            <a href="{{ path('v1_laboratory_list', {_locale: app.request.locale, city: null}) }}">{{ 'nav.laboratories'|trans }}</a>
+            <a href="{{ path('v1_medicine_list', {_locale: app.request.locale}) }}">{{ 'nav.medicines'|trans }}</a>
+            <a href="{{ path('v1_blog_index', {_locale: app.request.locale}) }}">{{ 'nav.blog'|trans }}</a>
+        </nav>
+
+        <div class="site-header__actions">
+            <a href="{{ path(app.request.attributes.get('_route'), app.request.attributes.get('_route_params')|merge({_locale: app.request.locale == 'fr' ? 'ar' : 'fr'})) }}" class="site-header__locale">
+                {{ app.request.locale == 'fr' ? 'العربية' : 'Français' }}
+            </a>
+            <a href="{{ path('v1_pro_landing', {_locale: app.request.locale}) }}" class="site-header__pro">{{ 'nav.pro'|trans }}</a>
+            <a href="{{ path('v1_login', {_locale: app.request.locale}) }}" class="site-header__login" data-auth="logged-out">{{ 'auth.login_submit'|trans }}</a>
+            <a href="#" class="site-header__login" data-auth="logged-in" onclick="FinPharmaApi.logout(); window.location.reload(); return false;" hidden>{{ 'auth.logout'|trans }}</a>
+            <a href="{{ path('v1_establishment_choose', {_locale: app.request.locale}) }}" class="btn btn--primary" data-auth="logged-out">{{ 'nav.add_establishment'|trans }}</a>
+            <a href="{{ path('v1_owner_space', {_locale: app.request.locale}) }}" class="btn btn--primary" data-auth="logged-in" hidden>{{ 'nav.my_space'|trans }}</a>
+        </div>
+    </div>
+</header>
+<script src="{{ asset('js/api-client.js') }}"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    var loggedIn = window.FinPharmaApi && FinPharmaApi.isLoggedIn();
+    document.querySelectorAll('[data-auth="logged-in"]').forEach(function (el) { el.hidden = !loggedIn; });
+    document.querySelectorAll('[data-auth="logged-out"]').forEach(function (el) { el.hidden = loggedIn; });
+});
+</script>

@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+{# templates/admin/base.html.twig
+   Layout volontairement séparé de templates/base.html.twig (site public) :
+   pas de SEO/hreflang/sélecteur de langue (l'admin n'a pas besoin d'être
+   indexé ni multilingue), et même logique que error404/500.html.twig
+   (Phase 4f) — un layout admin autonome ne risque pas de casser si le
+   layout public évolue, et vice-versa. #}
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="robots" content="noindex, nofollow">
+    <title>{% block title %}Administration{% endblock %} — FinPharma</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ asset('css/admin.css') }}">
+</head>
+<body>
+<div class="admin-layout">
+    <aside class="admin-sidebar">
+        <div class="admin-sidebar__brand">
+            <img src="{{ asset('images/logo-icon.png') }}" alt="FinPharma" width="28" height="28">
+            <span>Admin</span>
+        </div>
+        <nav class="admin-sidebar__nav">
+            <a href="{{ path('admin_dashboard') }}" class="{{ app.request.get('_route') == 'admin_dashboard' ? 'is-active' : '' }}">
+                <span>Tableau de bord</span>
+            </a>
+            <a href="{{ path('admin_pharmacies_pending') }}" class="{{ app.request.get('_route') starts with 'admin_pharmacies' ? 'is-active' : '' }}">
+                <span>Pharmacies</span>
+                {% if pendingCounts is defined and pendingCounts.pharmacies > 0 %}<span class="admin-badge">{{ pendingCounts.pharmacies }}</span>{% endif %}
+            </a>
+            <a href="{{ path('admin_establishment_pending', {type: 'doctors'}) }}" class="{{ app.request.get('_route') == 'admin_establishment_pending' and app.request.attributes.get('type') == 'doctors' ? 'is-active' : '' }}">
+                <span>Médecins</span>
+                {% if pendingCounts is defined and pendingCounts.doctors > 0 %}<span class="admin-badge">{{ pendingCounts.doctors }}</span>{% endif %}
+            </a>
+            <a href="{{ path('admin_establishment_pending', {type: 'laboratories'}) }}" class="{{ app.request.get('_route') == 'admin_establishment_pending' and app.request.attributes.get('type') == 'laboratories' ? 'is-active' : '' }}">
+                <span>Laboratoires</span>
+                {% if pendingCounts is defined and pendingCounts.laboratories > 0 %}<span class="admin-badge">{{ pendingCounts.laboratories }}</span>{% endif %}
+            </a>
+            <a href="{{ path('admin_wallet_recharges') }}" class="{{ app.request.get('_route') starts with 'admin_wallet' ? 'is-active' : '' }}">
+                <span>Recharges wallet</span>
+                {% if pendingCounts is defined and pendingCounts.recharges > 0 %}<span class="admin-badge">{{ pendingCounts.recharges }}</span>{% endif %}
+            </a>
+            <a href="{{ path('admin_prescriptions_history') }}" class="{{ app.request.get('_route') == 'admin_prescriptions_history' ? 'is-active' : '' }}">
+                <span>Historique déchiffrements</span>
+            </a>
+            <a href="{{ path('admin_medicines_list') }}" class="{{ app.request.get('_route') starts with 'admin_medicines' ? 'is-active' : '' }}">
+                <span>Médicaments</span>
+            </a>
+            <a href="{{ path('admin_wallet_credit_direct_form') }}" class="{{ app.request.get('_route') == 'admin_wallet_credit_direct_form' ? 'is-active' : '' }}">
+                <span>Créditer un utilisateur</span>
+            </a>
+            <a href="{{ path('admin_decoders_earnings') }}" class="{{ app.request.get('_route') == 'admin_decoders_earnings' ? 'is-active' : '' }}">
+                <span>Gains déchiffreurs</span>
+            </a>
+        </nav>
+        <a href="{{ path('v1_home', {_locale: 'fr'}) }}" class="admin-sidebar__back">← Retour au site</a>
+    </aside>
+
+    <main class="admin-main">
+        {% for message in app.flashes('success') %}
+            <div class="admin-flash admin-flash--success">{{ message }}</div>
+        {% endfor %}
+        {% for message in app.flashes('error') %}
+            <div class="admin-flash admin-flash--error">{{ message }}</div>
+        {% endfor %}
+
+        {% block body %}{% endblock %}
+    </main>
+</div>
+</body>
+</html>

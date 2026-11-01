@@ -1,0 +1,42 @@
+
+pro:
+    eyebrow: Espace professionnels de santé
+    title: Faites connaître votre établissement à des milliers de patients
+    lead: Pharmaciens, médecins et laboratoires, créez votre fiche gratuite sur FinPharma. Elle est visible sur le site et dans l'application mobile.
+    have_account: J'ai déjà un compte
+    who_title: Une présence pour chaque profession
+    pharmacist_title: Pharmaciens
+    pharmacist_desc: Affichez vos horaires, vos gardes et vos coordonnées. Les patients vous trouvent depuis leur position.
+    doctor_title: Médecins
+    doctor_desc: Présentez votre spécialité, votre cabinet et vos horaires dans votre ville.
+    lab_title: Laboratoires
+    lab_desc: Faites connaître vos analyses, votre adresse et vos horaires d'ouverture.
+    add_pharmacy: Ajouter ma pharmacie
+    add_doctor: Ajouter mon cabinet
+    add_lab: Ajouter mon laboratoire
+    benefits_title: Pourquoi rejoindre FinPharma
+    benefit1_title: Visibilité locale
+    benefit1_desc: Votre fiche apparaît sur les recherches par ville et sur la carte.
+    benefit2_title: Site et application
+    benefit2_desc: Une seule inscription pour le site web et l'application mobile.
+    benefit3_title: Fiche gérée par vous
+    benefit3_desc: Vous mettez à jour vos horaires et vos informations depuis votre espace.
+    benefit4_title: Gratuit pour démarrer
+    benefit4_desc: Créer et publier votre fiche ne coûte rien.
+    steps_title: Comment ça marche
+    step1_title: Créez votre compte
+    step1_desc: Quelques informations suffisent pour commencer.
+    step2_title: Renseignez votre établissement
+    step2_desc: Adresse, téléphone, horaires et, si besoin, un justificatif.
+    step3_title: Publication après vérification
+    step3_desc: Notre équipe vérifie la fiche avant de la publier.
+    note: Votre établissement existe déjà sur FinPharma ? Créez votre compte puis demandez à en prendre la gestion.
+    faq_title: Questions fréquentes
+    faq1_q: L'inscription est-elle payante ?
+    faq1_a: Non, la création de fiche est gratuite.
+    faq2_q: Combien de temps avant la publication ?
+    faq2_a: Chaque fiche est vérifiée par notre équipe avant d'être publiée. Vous voyez son statut dans votre espace.
+    faq3_q: Puis-je modifier ma fiche ensuite ?
+    faq3_a: Oui, depuis votre espace propriétaire. Les pharmaciens peuvent déjà modifier leurs horaires.
+    faq4_q: Mon établissement figure déjà sur le site, que faire ?
+    faq4_a: Créez votre compte et contactez-nous pour en revendiquer la gestion.

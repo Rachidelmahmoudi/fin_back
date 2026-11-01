@@ -1,0 +1,27 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+<div class="static-page">
+    {% include 'components/breadcrumbs.html.twig' with {items: [{name: 'nav.home'|trans, url: path('v1_home', {_locale: app.request.locale})}, {name: 'nav.add_establishment'|trans, url: null}]} %}
+
+    <header class="static-page__header">
+        <h1>{{ 'nav.add_establishment'|trans }}</h1>
+        <p>{{ 'establishment.choose_intro'|trans }}</p>
+    </header>
+
+    <div class="services__inner static-page__services">
+        <a href="{{ path('v1_establishment_create_pharmacy', {_locale: app.request.locale}) }}" class="service-card">
+            <span class="service-card__icon"><svg width="26" height="26" viewBox="0 0 24 24" fill="none"><path d="M12 2L2 7v10l10 5 10-5V7L12 2z" stroke="currentColor" stroke-width="1.5"/></svg></span>
+            <h2>{{ 'establishment.add_pharmacy'|trans }}</h2>
+        </a>
+        <a href="{{ path('v1_establishment_create_doctor', {_locale: app.request.locale}) }}" class="service-card">
+            <span class="service-card__icon"><svg width="26" height="26" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="8" r="4" stroke="currentColor" stroke-width="1.5"/><path d="M4 20c0-4 3.5-7 8-7s8 3 8 7" stroke="currentColor" stroke-width="1.5"/></svg></span>
+            <h2>{{ 'establishment.add_doctor'|trans }}</h2>
+        </a>
+        <a href="{{ path('v1_establishment_create_laboratory', {_locale: app.request.locale}) }}" class="service-card">
+            <span class="service-card__icon"><svg width="26" height="26" viewBox="0 0 24 24" fill="none"><path d="M9 3h6M10 3v5l-5 9a2 2 0 001.7 3h10.6a2 2 0 001.7-3l-5-9V3" stroke="currentColor" stroke-width="1.5"/></svg></span>
+            <h2>{{ 'establishment.add_laboratory'|trans }}</h2>
+        </a>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,26 @@
+{% extends 'admin/base.html.twig' %}
+{% block title %}Gains des déchiffreurs{% endblock %}
+
+{% block body %}
+<h1 class="admin-page-title">Gains des déchiffreurs ({{ decoders|length }})</h1>
+<p class="admin-page-subtitle">Lecture seule — points cumulés (User.decoderPoints), pas de conversion en argent réel pour l'instant.</p>
+
+<div class="admin-table-wrapper">
+    <table class="admin-table">
+        <thead>
+            <tr><th>Déchiffreur</th><th>Points cumulés</th><th>Déchiffrements terminés</th></tr>
+        </thead>
+        <tbody>
+            {% for decoder in decoders %}
+                <tr>
+                    <td>{{ decoder.email }}</td>
+                    <td><strong>{{ decoder.decoderPoints }}</strong></td>
+                    <td>{{ completedCounts[decoder.id.toRfc4122] ?? 0 }}</td>
+                </tr>
+            {% else %}
+                <tr><td colspan="3" class="admin-empty-state">Aucun déchiffreur pour l'instant.</td></tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

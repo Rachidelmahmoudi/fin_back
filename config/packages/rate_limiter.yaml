@@ -1,0 +1,62 @@
+# FinPharma — config/packages/rate_limiter.yaml
+# §18 : "rate limiting ... protection contre abus ... endpoints sensibles".
+#
+# Structure conforme à la doc officielle Symfony 7.4 : chaque limiteur est
+# une clé DIRECTE sous framework.rate_limiter, PAS sous une clé
+# intermédiaire "limiters:" (source d'une erreur de config précédente
+# quand ce fichier était en double avec un bloc obsolète dans
+# framework.yaml — retiré de framework.yaml, ce fichier-ci est maintenant
+# la seule source de vérité).
+#
+# L'application effective de ces limiteurs se fait via
+# App\Security\RateLimiterSubscriber (EventSubscriber), qui choisit le bon
+# limiteur selon la route matchée.
+
+framework:
+    rate_limiter:
+        # Login/register : cible principale du brute-force. Volontairement
+        # strict — un utilisateur légitime ne login pas 10x/minute.
+        api_auth:
+            policy: 'sliding_window'
+            limit: 10
+            interval: '1 minute'
+
+        # Refresh token : plus permissif (l'app peut refresh automatiquement
+        # en arrière-plan) mais toujours borné pour détecter un abus/vol de
+        # refresh token qui tenterait de rotate en boucle.
+        api_auth_refresh:
+            policy: 'sliding_window'
+            limit: 30
+            interval: '1 minute'
+
+        # Autocomplete médicament ET médecin (Espace Laboratoire) : appelé
+        # à chaque frappe clavier — généreux pour ne pas casser l'UX, mais
+        # présent pour éviter un scraping automatisé du catalogue.
+        api_medicine_autocomplete:
+            policy: 'sliding_window'
+            limit: 120
+            interval: '1 minute'
+
+        # Création de demande de déchiffrement / acceptation : sensible côté
+        # métier (impact wallet), limité par utilisateur.
+        api_prescription_mutation:
+            policy: 'sliding_window'
+            limit: 20
+            interval: '1 minute'
+
+        # Espace Laboratoire : création de société, création/édition/
+        # publication de médicament — mutations avec effet de bord réel
+        # (publish() déclenche potentiellement des centaines de
+        # notifications), même limite prudente que les mutations de
+        # déchiffrement d'ordonnance.
+        api_pharma_mutation:
+            policy: 'sliding_window'
+            limit: 20
+            interval: '1 minute'
+
+        # Fallback général pour tout endpoint API authentifié non listé
+        # ci-dessus — filet de sécurité plutôt qu'absence totale de limite.
+        api_default:
+            policy: 'sliding_window'
+            limit: 300
+            interval: '1 minute'

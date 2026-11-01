@@ -1,0 +1,11 @@
+framework:
+    translator:
+        default_path: '%kernel.project_dir%/translations'
+        fallbacks:
+            - fr
+        # §32 : domaine unique `messages` pour l'instant (nav/home/listing/
+        # pharmacy/footer/establishment/doctor/laboratory/medicine/service/
+        # blog/contact/auth/detail, tous dans messages.{fr,ar}.yaml, Phase
+        # 4d-4f). À éclater en domaines séparés (par exemple `seo`,
+        # `mobile`) seulement si le fichier devient difficile à maintenir —
+        # pas anticipé prématurément.

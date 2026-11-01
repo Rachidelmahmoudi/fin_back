@@ -1,0 +1,141 @@
+{% extends 'admin/base.html.twig' %}
+{% block title %}{{ medicine ? 'Modifier' : 'Ajouter' }} un médicament{% endblock %}
+
+{% block body %}
+<h1 class="admin-page-title">{{ medicine ? 'Modifier : ' ~ medicine.name : 'Ajouter un médicament' }}</h1>
+
+<form method="post" action="{{ medicine ? path('admin_medicines_update', {id: medicine.id}) : path('admin_medicines_create') }}" class="admin-form">
+    <div class="admin-form__grid">
+        <label class="admin-form__field admin-form__field--full">
+            <span>Nom commercial *</span>
+            <input type="text" name="name" value="{{ medicine ? medicine.name : '' }}" required>
+        </label>
+
+        <label class="admin-form__field">
+            <span>DCI (principe actif)</span>
+            <input type="text" name="dciName" value="{{ medicine and medicine.dci ? medicine.dci.name : '' }}">
+        </label>
+        <label class="admin-form__field">
+            <span>Laboratoire</span>
+            <input type="text" name="manufacturer" value="{{ medicine ? medicine.manufacturer : '' }}">
+        </label>
+
+        <label class="admin-form__field">
+            <span>Dosage</span>
+            <input type="text" name="dosageValue" value="{{ medicine ? medicine.dosageValue : '' }}" placeholder="Ex : 500">
+        </label>
+        <label class="admin-form__field">
+            <span>Unité</span>
+            <input type="text" name="dosageUnit" value="{{ medicine ? medicine.dosageUnit : '' }}" placeholder="Ex : MG">
+        </label>
+
+        <label class="admin-form__field">
+            <span>Forme</span>
+            <input type="text" name="form" value="{{ medicine ? medicine.form : '' }}" placeholder="Ex : Comprimé">
+        </label>
+        <label class="admin-form__field">
+            <span>Présentation</span>
+            <input type="text" name="presentation" value="{{ medicine ? medicine.presentation : '' }}" placeholder="Ex : Boîte de 20">
+        </label>
+
+        <label class="admin-form__field">
+            <span>Classe thérapeutique</span>
+            <input type="text" name="therapeuticClass" value="{{ medicine ? medicine.therapeuticClass : '' }}">
+        </label>
+        <label class="admin-form__field">
+            <span>Code ATC</span>
+            <input type="text" name="atcCode" value="{{ medicine ? medicine.atcCode : '' }}">
+        </label>
+
+        <label class="admin-form__field">
+            <span>Tableau</span>
+            <select name="tableau">
+                <option value="">—</option>
+                <option value="A" {{ medicine and medicine.tableau and medicine.tableau.value == 'A' ? 'selected' : '' }}>A</option>
+                <option value="B" {{ medicine and medicine.tableau and medicine.tableau.value == 'B' ? 'selected' : '' }}>B</option>
+            </select>
+        </label>
+        <label class="admin-form__field">
+            <span>Princeps / Générique</span>
+            <select name="princepsOrGeneric">
+                <option value="">—</option>
+                <option value="P" {{ medicine and medicine.princepsOrGeneric and medicine.princepsOrGeneric.value == 'P' ? 'selected' : '' }}>Princeps</option>
+                <option value="G" {{ medicine and medicine.princepsOrGeneric and medicine.princepsOrGeneric.value == 'G' ? 'selected' : '' }}>Générique</option>
+            </select>
+        </label>
+
+        <label class="admin-form__field admin-form__field--full">
+            <span>Indications</span>
+            <textarea name="indications" rows="3">{{ medicine ? medicine.indications : '' }}</textarea>
+        </label>
+        <label class="admin-form__field admin-form__field--full">
+            <span>Contre-indications</span>
+            <textarea name="contraindications" rows="2">{{ medicine ? medicine.contraindications : '' }}</textarea>
+        </label>
+        <label class="admin-form__field admin-form__field--full">
+            <span>Précautions</span>
+            <textarea name="precautions" rows="2">{{ medicine ? medicine.precautions : '' }}</textarea>
+        </label>
+
+        <h2 class="admin-form__section-title admin-form__field--full">Prix &amp; remboursement CNSS</h2>
+
+        <label class="admin-form__field">
+            <span>Prix commercial (DH)</span>
+            <input type="number" step="0.01" name="priceCommercial" value="{{ medicine ? medicine.priceCommercial : '' }}">
+        </label>
+        <label class="admin-form__field">
+            <span>Prix hospitalier (DH)</span>
+            <input type="number" step="0.01" name="priceHospitalCommercial" value="{{ medicine ? medicine.priceHospitalCommercial : '' }}">
+        </label>
+
+        <label class="admin-form__field">
+            <span>Code EAN13</span>
+            <input type="text" name="ean13Code" value="{{ medicine ? medicine.ean13Code : '' }}">
+        </label>
+        <label class="admin-form__field"></label>
+
+        <label class="admin-form__field">
+            <span>PPV (CNSS)</span>
+            <input type="number" step="0.01" name="ppvCnss" value="{{ medicine ? medicine.ppvCnss : '' }}">
+        </label>
+        <label class="admin-form__field">
+            <span>PH (CNSS)</span>
+            <input type="number" step="0.01" name="phCnss" value="{{ medicine ? medicine.phCnss : '' }}">
+        </label>
+
+        <label class="admin-form__field">
+            <span>PPV-BR (CNSS)</span>
+            <input type="number" step="0.01" name="ppvBrCnss" value="{{ medicine ? medicine.ppvBrCnss : '' }}">
+        </label>
+        <label class="admin-form__field"></label>
+
+        <label class="admin-form__field">
+            <span>Taux de remboursement (0 à 1)</span>
+            <input type="number" step="0.01" min="0" max="1" name="reimbursementRate" value="{{ medicine ? medicine.reimbursementRate : '' }}">
+        </label>
+        <label class="admin-form__field">
+            <span>Taux d'exonération (0 à 1)</span>
+            <input type="number" step="0.01" min="0" max="1" name="exonerationRate" value="{{ medicine ? medicine.exonerationRate : '' }}">
+        </label>
+
+        <label class="admin-checkbox-inline admin-form__field--full">
+            <input type="checkbox" name="exonerationEligible" value="1" {{ medicine and medicine.exonerationEligible ? 'checked' : '' }}>
+            Éligible à l'exonération
+        </label>
+        <label class="admin-checkbox-inline admin-form__field--full">
+            <input type="checkbox" name="needsReview" value="1" {{ medicine and medicine.needsReview ? 'checked' : '' }}>
+            En attente de vérification (masqué du catalogue public tant que coché)
+        </label>
+        {# Décoché par défaut à la création : un médicament saisi directement
+           par un admin est considéré fiable d'emblée, contrairement aux
+           imports en masse (medicament.ma/CNSS) qui restent "à vérifier"
+           tant qu'aucun rapprochement fiable n'a été fait — voir
+           ImportMergedMedicinesCommand. #}
+    </div>
+
+    <div class="admin-form__actions">
+        <a href="{{ path('admin_medicines_list') }}" class="admin-btn">Annuler</a>
+        <button type="submit" class="admin-btn admin-btn--approve">{{ medicine ? 'Enregistrer' : 'Créer' }}</button>
+    </div>
+</form>
+{% endblock %}

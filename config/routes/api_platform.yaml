@@ -1,0 +1,15 @@
+# config/routes/api_platform.yaml
+# §Correctif : "prefix: /api/v1" ajouté — sans ça, TOUTES les routes
+# générées par API Platform (docs, entrypoint, contexts, ET les 4
+# ApiResource Pharmacy/Medicine/Doctor/Laboratory) étaient enregistrées à
+# la racine du domaine ("/pharmacies", "/docs.{_format}"...) au lieu de
+# "/api/v1/pharmacies", "/api/v1/docs"... — en contradiction avec le reste
+# du projet entier (security.yaml access_control cible "^/api/v1/...",
+# l'app mobile appelle "environment.apiBaseUrl + /pharmacies", tous les
+# controllers faits main sont déjà sous /api/v1). Sans ce préfixe, le
+# catalogue pharmacies/médecins/laboratoires/médicaments n'était tout
+# simplement pas joignable là où web et mobile le cherchent.
+api_platform:
+    resource: .
+    type: api_platform
+    prefix: /api/v1
