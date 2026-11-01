@@ -9,5 +9,5 @@ RUN composer install --no-dev --no-scripts --no-autoloader --prefer-dist
 COPY . .
 RUN composer dump-autoload --classmap-authoritative --no-dev \
  && mkdir -p var/cache var/log && chown -R www-data:www-data var
-COPY deploy/Caddyfile /etc/caddy/Caddyfile
+COPY deploy/Caddyfile /etc/frankenphp/Caddyfile
 COPY deploy/php.ini /usr/local/etc/php/conf.d/zz-prod.ini

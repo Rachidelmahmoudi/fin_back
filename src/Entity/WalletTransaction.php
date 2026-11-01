@@ -8,25 +8,6 @@ use App\Repository\WalletTransactionRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Uid\Uuid;
 
-/**
- * CREDIT/DEBIT/REFUND = mouvements réels sur balance.
- * HOLD/RELEASE = mouvements sur holdBalance uniquement (réservation avant
- * débit effectif), introduits pour le flux "débit à la validation du
- * déchiffreur" confirmé dans l'Addendum 2 :
- *   1. Pharmacien publie -> pas de mouvement, juste vérif balance>=5DH.
- *   2. Déchiffreur accepte -> HOLD (montant estimé = itemsCount x 1 DH).
- *   3. Déchiffreur valide  -> RELEASE du hold + DEBIT réel (montant exact).
- *   4. Expiration/annulation avant validation -> RELEASE seul, aucun DEBIT.
- */
-enum WalletTransactionType: string
-{
-    case CREDIT = 'CREDIT';
-    case DEBIT = 'DEBIT';
-    case REFUND = 'REFUND';
-    case HOLD = 'HOLD';
-    case RELEASE = 'RELEASE';
-}
-
 #[ORM\Entity(repositoryClass: WalletTransactionRepository::class)]
 #[ORM\Table(name: 'wallet_transaction')]
 #[ORM\Index(name: 'idx_wallet_tx_wallet', columns: ['wallet_id'])]

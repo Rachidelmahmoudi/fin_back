@@ -10,18 +10,6 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Uid\Uuid;
 
-enum MedicineTableau: string
-{
-    case A = 'A';
-    case B = 'B';
-}
-
-enum PrincepsOrGeneric: string
-{
-    case PRINCEPS = 'P';
-    case GENERIC = 'G';
-}
-
 /**
  * Entité pivot agrégeant les données de plusieurs sources (medicament.ma +
  * guide CNSS). Tous les champs propres à une seule source sont nullable ;

@@ -10,13 +10,6 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Uid\Uuid;
 
-enum PharmacyStatus: string
-{
-    case PENDING = 'PENDING';
-    case ACTIVE = 'ACTIVE';
-    case SUSPENDED = 'SUSPENDED';
-}
-
 #[ORM\Entity(repositoryClass: PharmacyRepository::class)]
 #[ORM\Table(name: 'pharmacy')]
 #[ORM\UniqueConstraint(name: 'uniq_pharmacy_slug', columns: ['slug'])]
