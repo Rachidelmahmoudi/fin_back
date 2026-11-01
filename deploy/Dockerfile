@@ -1,5 +1,5 @@
 # Image de production : FrankenPHP (Caddy + PHP) => HTTPS automatique, un seul conteneur web
-FROM dunglas/frankenphp:1-php8.3 AS app
+FROM dunglas/frankenphp:1-php8.4 AS app
 RUN install-php-extensions pdo_pgsql intl opcache bcmath zip gd
 ENV APP_ENV=prod COMPOSER_ALLOW_SUPERUSER=1
 WORKDIR /app
